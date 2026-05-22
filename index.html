@@ -1187,56 +1187,231 @@ footer {
 
       <div class="contact-form-wrap">
         <h3>Tell Us About<br>Your Event</h3>
-        <form id="bookingForm" onsubmit="submitForm(event)">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="fname">First Name</label>
-              <input type="text" id="fname" name="fname" placeholder="Jane" required>
-            </div>
-            <div class="form-group">
-              <label for="lname">Last Name</label>
-              <input type="text" id="lname" name="lname" placeholder="Smith" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="jane@email.com" required>
-          </div>
-          <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="(707) 555-0000">
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="eventDate">Event Date</label>
-              <input type="date" id="eventDate" name="eventDate">
-            </div>
-            <div class="form-group">
-              <label for="guestCount">Guest Count</label>
-              <input type="number" id="guestCount" name="guestCount" placeholder="Approx. guests">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="eventTypeBook">Event Type</label>
-            <select id="eventTypeBook" name="eventTypeBook">
-              <option value="">Select a type...</option>
-              <option value="wedding">Wedding</option>
-              <option value="private">Private Party</option>
-              <option value="corporate">Corporate Event</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="message">Tell Us More</label>
-            <textarea id="message" name="message" rows="4" placeholder="Venue, vibe, any special requests..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-solid" style="width:100%;text-align:center;">
-            Send Inquiry
-          </button>
-        </form>
-        <div class="form-success" id="formSuccess">
-          <p>Thank you! We'll be in touch soon.</p>
-        </div>
+        <style>
+  /* Base styles for the form */
+  #bookingForm {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: sans-serif;
+  }
+  .form-group {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  /* Scoped to form only — won't affect other labels on the page */
+  #bookingForm label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px; /* Prevents auto-zoom on iOS */
+  }
+  /* Horizontal layout for desktop */
+  .form-row {
+    display: flex;
+    gap: 15px;
+  }
+  .form-row .form-group {
+    flex: 1;
+  }
+  /* Button styling */
+  .btn-solid {
+    background-color: #333;
+    color: #fff;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .btn-solid:hover {
+    background-color: #555;
+  }
+  /* Loading/disabled state — shows feedback on mobile after tap */
+  .btn-solid:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+  }
+  /* Success message */
+  .fs-success {
+    display: none;
+    color: #28a745;
+    font-weight: bold;
+    padding: 16px;
+    background: #f0fff4;
+    border: 1px solid #28a745;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  /* Error message */
+  .fs-error {
+    display: none;
+    color: #dc3545;
+    font-weight: bold;
+    padding: 16px;
+    background: #fff0f0;
+    border: 1px solid #dc3545;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  /* Email text styling */
+  .direct-contact {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #666;
+  }
+  .direct-contact a {
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  /* Mobile responsiveness: Stack columns vertically on small screens */
+  @media (max-width: 600px) {
+    .form-row {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+</style>
+
+<!-- Success Message -->
+<div class="fs-success" id="fs-success">
+  ✅ Thank you! Your inquiry has been received. We'll be in touch within 24 hours.
+</div>
+
+<!-- Error Message -->
+<div class="fs-error" id="fs-error">
+  ❌ Something went wrong. Please try again or email us directly at
+  <a href="mailto:hello@fyre-bar.com">hello@fyre-bar.com</a>
+</div>
+
+<form id="bookingForm" action="https://formspree.io/f/xykvwvgo" method="POST">
+
+  <input type="hidden" name="_subject" value="New Event Inquiry - FYRE Bartending">
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="fname">First Name</label>
+      <input type="text" id="fname" name="fname" placeholder="Jane" required>
+    </div>
+    <div class="form-group">
+      <label for="lname">Last Name</label>
+      <input type="text" id="lname" name="lname" placeholder="Smith" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" placeholder="jane@email.com" required>
+  </div>
+
+  <div class="form-group">
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" name="phone" placeholder="(707) 555-0000">
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="eventDate">Event Date</label>
+      <input type="date" id="eventDate" name="eventDate">
+    </div>
+    <div class="form-group">
+      <label for="guestCount">Guest Count</label>
+      <input type="number" id="guestCount" name="guestCount" placeholder="Approx. guests">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="eventTypeBook">Event Type</label>
+    <select id="eventTypeBook" name="eventTypeBook">
+      <option value="">Select a type...</option>
+      <option value="wedding">Wedding</option>
+      <option value="private">Private Party</option>
+      <option value="corporate">Corporate Event</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="message">Tell Us More</label>
+    <textarea id="message" name="message" rows="4"
+      placeholder="Venue, vibe, any special requests..."></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-solid" id="submitBtn"
+    style="width:100%;text-align:center;">
+    Send Inquiry
+  </button>
+
+  <div class="direct-contact">
+    Having trouble? Email us directly at
+    <a href="mailto:hello@fyre-bar.com">hello@fyre-bar.com</a>
+  </div>
+
+</form>
+
+<script>
+  const form = document.getElementById('bookingForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const successMsg = document.getElementById('fs-success');
+  const errorMsg = document.getElementById('fs-error');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    // Disable button and show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    // Hide any previous messages
+    successMsg.style.display = 'none';
+    errorMsg.style.display = 'none';
+
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch('https://formspree.io/f/xykvwvgo', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        // Show success, hide the form
+        successMsg.style.display = 'block';
+        form.style.display = 'none';
+      } else {
+        // Show error, re-enable button
+        errorMsg.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Inquiry';
+      }
+    } catch (error) {
+      // Network error fallback
+      errorMsg.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Inquiry';
+    }
+  });
+</script>
       </div>
 
     </div>

@@ -810,7 +810,6 @@ footer {
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
-    <li><a href="#smartmenu">Menu Builder</a></li>
     <li><a href="#gallery">Gallery</a></li>
     <li><a href="#contact">Book</a></li>
   </ul>
@@ -818,33 +817,12 @@ footer {
 
 <!-- HERO -->
 <section class="hero" id="home">
- <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;">
-  <source src="fyre-hero.mp4" type="video/mp4">
-</video>
-
-<script>
-  // Force autoplay on iOS Safari
-  var heroVideo = document.getElementById('heroVideo');
-  heroVideo.muted = true;
-  heroVideo.setAttribute('muted', '');
-  heroVideo.setAttribute('playsinline', '');
-  heroVideo.setAttribute('webkit-playsinline', '');
-
-  // Attempt to play on load
-  var playPromise = heroVideo.play();
-  if (playPromise !== undefined) {
-    playPromise.catch(function() {
-      // If autoplay blocked, try again on first user touch
-      document.addEventListener('touchstart', function() {
-        heroVideo.play();
-      }, { once: true });
-    });
-  }
-</script>
+  <video autoplay muted loop playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+    <source src="assets/videos/fyre-hero.mp4" type="video/mp4">
   </video>
   <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);z-index:1;"></div>
   <div class="hero-content" style="position:relative;z-index:2;">
-    <p class="hero-eyebrow">Sonoma County &bull; Marin County &bull; San Francisco </p>
+    <p class="hero-eyebrow">Sonoma County &bull; Est. 2024</p>
     <h1>Craft<br><em>Bartending</em><br>Elevated</h1>
     <p class="hero-sub">
       Weddings
@@ -857,7 +835,7 @@ footer {
   </div>
   <div class="hero-scroll" style="z-index:2;">
     <div class="scroll-line"></div>
-    <span>&nbsp;</span>
+    <span></span>
   </div>
 </section>
 
@@ -868,9 +846,9 @@ footer {
       <div class="about-text">
         <p class="section-label">Our Story</p>
         <h2 class="section-title">Rooted in<br><em>Sonoma County</em></h2>
-        <p>FYRE Bartending was born from a love of this land and the incredible ingredients it produces. Based in Petaluma, we are dedicated to bringing a farm-to-glass philosophy to every event.[...]
-        <p>From small estate weddings in the hills of West Sonoma to corporate gatherings in the heart of San Francisco, we craft cocktail experiences that reflect the season, the setting, and th[...]
-        <p>We pride ourselves by using local ingredients, fresh-pressed juices, house-made syrups, and foraged botanicals. Crafted with care, served with heart. We bring the best bar experience t[...]
+        <p>FYRE Bartending was born from a love of this land and the incredible ingredients it produces. Based in the Northern Bay area, we set our intentions of bringing a farm-to-glass philosophy to every event. &nbsp; &nbsp;</p>
+        <p>From small estate weddings in the hills of West Sonoma to corporate gatherings in the heart of San Francisco, we craft cocktail experiences that reflect the season, the setting, and the people we serve.</p>
+        <p>We pride ourselves by using local ingredients, fresh-pressed juices, house-made syrups, and foraged botanicals. Crafted with care, served with heart. We bring the best bar experience to you, ensuring an unforgettable celebration for you and your guests.&nbsp;</p>
         <br>
         <a href="#contact" class="btn">Work with Us</a>
       </div>
@@ -880,7 +858,7 @@ footer {
           <img src="about.jpg" alt="FYRE Bartending">
         -->
         <div class="about-image-placeholder" style="background:none;padding:0;">
-          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5Ojf/2wBDAQoKCg0MDRoPDxo3JR8lNzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzf/2wBDAQoKCg0MDRoPDxo3JR8lNzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzf/wAARCAAoAKADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWm5ybnJ2eoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlbaWmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD5/KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/2Q==" alt="FYRE Bartending">
+          <img src="images/about.jpg" alt="FYRE Bartending">
         </div>
         <div class="about-accent"></div>
       </div>
@@ -936,65 +914,111 @@ footer {
   </div>
   <div class="gallery-grid">
     <div class="gallery-item gallery-item-tall">
-      <div class="gallery-placeholder">IMAGE</div>
+      <img src="images/gallery-1.jpg" alt="Gallery photo 1">
     </div>
     <div class="gallery-item">
-      <div class="gallery-placeholder">IMAGE</div>
+      <img src="images/gallery-2.jpg" alt="Gallery photo 2">
     </div>
     <div class="gallery-item">
-      <div class="gallery-placeholder">IMAGE</div>
+      <img src="images/gallery-3.jpg" alt="Gallery photo 3">
     </div>
     <div class="gallery-item">
-      <div class="gallery-placeholder">IMAGE</div>
+      <img src="images/gallery-4.jpg" alt="Gallery photo 4">
     </div>
     <div class="gallery-item">
-      <div class="gallery-placeholder">IMAGE</div>
+      <img src="images/gallery-5.jpg" alt="Gallery photo 5">
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- SMART MENU -->
+
+
+
+
+<!-- CONTACT / BOOKING -->
 <section class="section contact" id="contact">
   <div class="section-inner">
     <div class="contact-grid">
+
       <div class="contact-info">
-        <h3>Ready to Elevate Your Event?</h3>
-        <p>Get in touch with FYRE Bartending to book your next event or discuss your custom bar needs. We're based in Sonoma County and service weddings, private events, and corporate gatherings across Northern California.</p>
+        <p class="section-label">Let's Connect</p>
+        <h2 class="section-title">Book Your <em>Event</em></h2>
+        <p>Ready to talk? Fill out the form and we'll get back to you within one business day to discuss your event and begin building your custom experience.</p>
         <div class="contact-detail">
           <div class="contact-detail-item">
+            <span class="detail-label">Location</span>
+            <span class="detail-value">Serving the North Bay Area, San Francisco &amp; East Bay&nbsp;</span>
+          </div>
+          <div class="contact-detail-item">
             <span class="detail-label">Email</span>
-            <span class="detail-value">hello@fyrebartending.com</span>
+            <span class="detail-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="aec6cbc2c2c1eec8d7dccbcccfdcdacbc0cac7c0c980cdc1c3">Fyre-bar@info.com&nbsp;</a></span>
           </div>
           <div class="contact-detail-item">
             <span class="detail-label">Phone</span>
-            <span class="detail-value">(707) 555-FYRE</span>
+            <span class="detail-value">(415)488-6193</span>
           </div>
           <div class="contact-detail-item">
-            <span class="detail-label">Service Area</span>
-            <span class="detail-value">Sonoma County, Marin County, San Francisco</span>
+            <span class="detail-label">Instagram</span>
+            <span class="detail-value">@fyrebartending</span>
           </div>
         </div>
       </div>
+
       <div class="contact-form-wrap">
-        <h3>Send us a Message</h3>
-        <form>
+        <h3>Tell Us About<br>Your Event</h3>
+        <form id="bookingForm" onsubmit="submitForm(event)">
           <div class="form-row">
             <div class="form-group">
-              <label>Your Name</label>
-              <input type="text" placeholder="Name">
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" name="fname" placeholder="Jane" required>
             </div>
             <div class="form-group">
-              <label>Email</label>
-              <input type="email" placeholder="Email">
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" name="lname" placeholder="Smith" required>
             </div>
           </div>
           <div class="form-group">
-            <label>Message</label>
-            <textarea placeholder="Tell us about your event..."></textarea>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@email.com" required>
           </div>
-          <button type="submit" class="btn btn-solid" style="width:100%;">Send Message</button>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="(707) 555-0000">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="eventDate">Event Date</label>
+              <input type="date" id="eventDate" name="eventDate">
+            </div>
+            <div class="form-group">
+              <label for="guestCount">Guest Count</label>
+              <input type="number" id="guestCount" name="guestCount" placeholder="Approx. guests">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="eventTypeBook">Event Type</label>
+            <select id="eventTypeBook" name="eventTypeBook">
+              <option value="">Select a type...</option>
+              <option value="wedding">Wedding</option>
+              <option value="private">Private Party</option>
+              <option value="corporate">Corporate Event</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Tell Us More</label>
+            <textarea id="message" name="message" rows="4" placeholder="Venue, vibe, any special requests..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-solid" style="width:100%;text-align:center;">
+            Send Inquiry
+          </button>
         </form>
+        <div class="form-success" id="formSuccess">
+          <p>Thank you! We'll be in touch soon.</p>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -1002,28 +1026,74 @@ footer {
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">FY<span>R</span>E</div>
-  <p class="footer-tagline">CRAFT BARTENDING ELEVATED</p>
+  <p class="footer-tagline">Craft Bartending &bull; Sonoma County</p>
   <ul class="footer-links">
-    <li><a href="#home">Home</a></li>
     <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
     <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contact">Book</a></li>
   </ul>
   <div class="footer-divider"></div>
-  <p class="footer-copy">&copy; 2024 FYRE Bartending. All rights reserved.</p>
+  <p class="footer-copy">&copy; 2026 FYRE Bartending. Petaluma, CA. All rights reserved.</p>
 </footer>
 
-<script>
-// Navigation scroll effect
-window.addEventListener('scroll', function() {
-  const nav = document.getElementById('mainNav');
-  if (window.scrollY > 50) {
-    nav.classList.add('scrolled');
-  } else {
-    nav.classList.remove('scrolled');
-  }
-});
-</script>
+<!-- JAVASCRIPT -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
 
-</body>
-</html>
+  /* Sticky nav */
+  var nav = document.getElementById('mainNav');
+  window.onscroll = function() {
+    if (window.pageYOffset > 60) {
+      nav.className = 'scrolled';
+    } else {
+      nav.className = '';
+    }
+  };
+
+  /* Estimate calculator */
+  function calcEstimate() {
+    var guests = parseInt(document.getElementById('calcGuests').value) || 0;
+    var hours  = parseInt(document.getElementById('calcHours').value)  || 0;
+    var type   = document.getElementById('calcType').value;
+
+    if (guests < 1 || hours < 1) {
+      alert('Please enter both a guest count and number of hours.');
+      return;
+    }
+
+    var base     = 300;
+    var perGuest = 9;
+    var perHour  = 85;
+    var typeAdj  = 0;
+
+    if (type === 'wedding') {
+      typeAdj  = 250;
+      perGuest = 11;
+    }
+    if (type === 'consult') {
+      base     = 0;
+      perGuest = 0;
+      perHour  = 120;
+    }
+
+    var total = base + (guests * perGuest) + (hours * perHour) + typeAdj;
+
+    document.getElementById('estimatePrice').innerHTML = '$' + total.toLocaleString();
+    document.getElementById('estimateResult').className = 'estimate-result visible';
+  }
+
+  /* Booking form */
+  function submitForm(e) {
+    e.preventDefault();
+    /*
+      TO CONNECT THIS FORM to a real email service:
+      Use Formspree (free): https://formspree.io
+      Replace the lines below with:
+
+      fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        method: 'POST',
+        body: new FormData(document.getElementById('bookingForm')),
+        headers: { 'Accept': 'application/json' }
+      }).then(function() {
+        document.getElementById('bookingForm').style.display = 'none';
+        document.getElementById('formSucces

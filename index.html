@@ -130,10 +130,6 @@ nav.scrolled {
   background: radial-gradient(ellipse at 60% 40%, #3a1a08 0%, #0d0d0d 70%);
 }
 
-/* To use your own photo, replace hero-bg-gradient with this div:
-   <div style="position:absolute;top:0;left:0;right:0;bottom:0;background-image:url('hero.jpg');background-size:cover;background-position:center;opacity:0.45;"></div>
-*/
-
 .hero-content {
   position: relative;
   z-index: 2;
@@ -208,6 +204,17 @@ nav.scrolled {
 .btn-solid:hover {
   background: var(--ember-lt);
   border-color: var(--ember-lt);
+}
+
+.btn-dark {
+  background: var(--charcoal);
+  border-color: var(--charcoal);
+  color: var(--white);
+}
+
+.btn-dark:hover {
+  background: var(--black);
+  border-color: var(--black);
 }
 
 .hero-scroll {
@@ -846,17 +853,13 @@ footer {
       <div class="about-text">
         <p class="section-label">Our Story</p>
         <h2 class="section-title">Rooted in<br><em>Sonoma County</em></h2>
-        <p>FYRE Bartending was born from a love of this land and the incredible ingredients it produces. Based in the Northern Bay area, we set our intentions of bringing a farm-to-glass philosophy to every event. &nbsp; &nbsp;</p>
+        <p>FYRE Bartending was born from a love of this land and the incredible ingredients it produces. Based in the Northern Bay area, we set our intentions of bringing a farm-to-glass philosophy to every event.</p>
         <p>From small estate weddings in the hills of West Sonoma to corporate gatherings in the heart of San Francisco, we craft cocktail experiences that reflect the season, the setting, and the people we serve.</p>
-        <p>We pride ourselves by using local ingredients, fresh-pressed juices, house-made syrups, and foraged botanicals. Crafted with care, served with heart. We bring the best bar experience to you, ensuring an unforgettable celebration for you and your guests.&nbsp;</p>
+        <p>We pride ourselves by using local ingredients, fresh-pressed juices, house-made syrups, and foraged botanicals. Crafted with care, served with heart. We bring the best bar experience to you, ensuring an unforgettable celebration for you and your guests.</p>
         <br>
-        <a href="#contact" class="btn">Work with Us</a>
+        <a href="#contact" class="btn btn-dark">Work with Us</a>
       </div>
       <div class="about-image">
-        <!--
-          REPLACE THIS WITH YOUR PHOTO:
-          <img src="about.jpg" alt="FYRE Bartending">
-        -->
         <div class="about-image-placeholder" style="background:none;padding:0;">
           <img src="images/about.jpg" alt="FYRE Bartending">
         </div>
@@ -931,11 +934,6 @@ footer {
   </div>
 </section>
 
-<!-- SMART MENU -->
-
-
-
-
 <!-- CONTACT / BOOKING -->
 <section class="section contact" id="contact">
   <div class="section-inner">
@@ -948,7 +946,7 @@ footer {
         <div class="contact-detail">
           <div class="contact-detail-item">
             <span class="detail-label">Location</span>
-            <span class="detail-value">Serving the North Bay Area, San Francisco &amp; East Bay&nbsp;</span>
+            <span class="detail-value">Serving the North Bay Area, San Francisco &amp; East Bay</span>
           </div>
           <div class="contact-detail-item">
             <span class="detail-label">Email</span>
@@ -959,8 +957,15 @@ footer {
             <span class="detail-value">(415)488-6193</span>
           </div>
           <div class="contact-detail-item">
-            <span class="detail-label">Instagram</span>
-            <span class="detail-value">@fyrebartending</span>
+            <span class="detail-label">Follow Us</span>
+            <div style="display:flex; gap:12px; margin-top:4px;">
+              <a href="https://www.instagram.com/fyrebartending" target="_blank" class="btn btn-solid" style="padding:10px 20px; font-size:0.72rem;">
+                Instagram
+              </a>
+              <a href="https://www.facebook.com/profile.php?id=61590439706775" target="_blank" class="btn btn-solid" style="padding:10px 20px; font-size:0.72rem;">
+                Facebook
+              </a>
+            </div>
           </div>
         </div>
       </div>

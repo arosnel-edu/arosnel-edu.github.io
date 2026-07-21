@@ -1053,6 +1053,14 @@ video::-webkit-media-play-button {
 
   /* Sticky nav */
   var nav = document.getElementById('mainNav');
+  /* Force remove iOS video controls */
+var vid = document.querySelector('video');
+if (vid) {
+  vid.removeAttribute('controls');
+  vid.setAttribute('playsinline', '');
+  vid.setAttribute('disablepictureinpicture', '');
+  vid.load();
+}
   window.onscroll = function() {
     if (window.pageYOffset > 60) {
       nav.className = 'scrolled';

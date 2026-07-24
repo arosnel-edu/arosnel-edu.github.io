@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FYRE Bartending – Event Quote Builder</title>
+<style>
+  :root {
+    --orange: #D85A30;
+    --orange-dark: #B04520;
+    --orange-light: #FAECE7;
+    --text: #1a1a1a;
+    --muted: #666;
+    --border: #e0e0e0;
+    --bg: #f5f5f5;
+    --white: #ffffff;
+    --green: #2a7a4b;
+    --gold: #b8860b;
+    --gold-bg: #fffbea;
+    --gold-border: #f0c040;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #111;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .header-logo { font-size: 20px; font-weight: 700; color: var(--orange); letter-spacing: -0.5px; }
+  .header-sub  { font-size: 12px; color: #999; margin-top: 2px; }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 0;
+    align-items: start;
+  }
+  .left  { padding: 24px; }
+  .right {
+    background: var(--white);
+    border-left: 1px solid var(--border);
+    padding: 24px;
+    min-height: calc(100vh - 56px);
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 28px; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  /* ── PACKAGE CARDS ── */
+  .pkg-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .pkg-card {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .pkg-card:hover { border-color: #bbb; }
+  .pkg-card.active {
+    border-color: var(--orange);
+    background: var(--orange-light);
+  }
+  .pkg-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .pkg-card.active .pkg-name { color: var(--orange-dark); }
+  .pkg-tagline {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .pkg-from {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .pkg-card.active .pkg-from { color: var(--orange); }
+  .pkg-includes {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .pkg-card.active .pkg-includes { border-color: #e8c4b8; }
+  .pkg-inc-item {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 2px 0;
+    display: flex;
+    gap: 5px;
+    line-height: 1.4;
+  }
+  .pkg-inc-item::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .pkg-note {
+    margin-top: 8px;
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: #7a5c00;
+    background: var(--gold-bg);
+    border: 1px solid var(--gold-border);
+    border-radius: 6px;
+    padding: 5px 7px;
+  }
+
+  /* ── GUEST NUMBER INPUT ── */
+  .guest-entry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .guest-entry label {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .guest-entry input[type="number"] {
+    width: 90px;
+    padding: 7px 9px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+  }
+  .guest-entry input[type="number"]:focus { border-color: var(--orange); }
+
+  /* ── SLIDERS ── */
+  .slider-wrap { margin-bottom: 18px; }
+  .slider-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .slider-name { font-size: 14px; }
+  .slider-val  { font-size: 14px; font-weight: 700; color: var(--orange); }
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 5px;
+    background: var(--border);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--orange);
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--orange);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  }
+  .slider-hints {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 4px;
+  }
+
+  /* ── ALERT ── */
+  .alert {
+    display: none;
+    background: var(--gold-bg);
+    border: 1px solid var(--gold-border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #7a5c00;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  .alert.show { display: block; }
+
+  /* ── ADD-ON ROWS ── */
+  .addon-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 14px;
+  }
+  .addon-row:last-child { border-bottom: none; }
+  .addon-info  { flex: 1; }
+  .addon-name  { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+  .addon-desc  { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .addon-cost  { font-size: 12px; color: var(--orange); font-weight: 600; margin-top: 3px; }
+
+  /* ── TOGGLE ── */
+  .toggle {
+    width: 44px;
+    height: 26px;
+    background: #ccc;
+    border-radius: 13px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .toggle.on { background: var(--orange); }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    transition: left 0.18s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .toggle.on::after { left: 21px; }
+
+  /* ── SEGMENTED CONTROL (mocktails) ── */
+  .seg {
+    display: inline-flex;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .seg-btn {
+    border: none;
+    background: var(--white);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: inherit;
+    border-left: 1px solid var(--border);
+  }
+  .seg-btn:first-child { border-left: none; }
+  .seg-btn.active { background: var(--orange); color: #fff; }
+
+  /* ── INCLUDED BADGE ── */
+  .addon-included {
+    flex-shrink: 0;
+    margin-top: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green);
+    background: #eef7f2;
+    border-radius: 6px;
+    padding: 4px 8px;
+    white-space: nowrap;
+  }
+
+  /* ── FOUNDING DISCOUNT BANNER ── */
+  .discount-banner {
+    background: var(--gold-bg);
+    border: 1.5px solid var(--gold-border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .discount-info .discount-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 3px;
+  }
+  .discount-info .discount-desc {
+    font-size: 12px;
+    color: #7a5c00;
+    line-height: 1.4;
+  }
+  .slots-left {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-top: 4px;
+  }
+
+  /* ── QUOTE PANEL ── */
+  .quote-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .q-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    font-size: 13px;
+    gap: 8px;
+  }
+  .q-label  { color: var(--muted); flex: 1; line-height: 1.35; }
+  .q-amount { font-weight: 600; color: var(--text); white-space: nowrap; }
+  .q-strike { text-decoration: line-through; color: #bbb; }
+  .divider  { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+
+  .discount-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    font-size: 13px;
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+  .total-label  { font-size: 15px; font-weight: 700; }
+  .total-amount { font-size: 32px; font-weight: 800; color: var(--orange); }
+
+  .benchmark {
+    display: block;
+    background: #eef7f2;
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 8px;
+    border-radius: 5px;
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+  .quote-note {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 12px;
+  }
+  .quote-note strong { color: var(--text); }
+
+  .btn {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.15s, color 0.15s;
+    border: none;
+  }
+  .btn-primary { background: var(--orange); color: white; }
+  .btn-primary:hover { background: var(--orange-dark); }
+  .btn-secondary {
+    background: transparent;
+    border: 2px solid var(--orange);
+    color: var(--orange);
+  }
+  .btn-secondary:hover { background: var(--orange-light); }
+
+  .fine-print {
+    font-size: 11px;
+    color: #aaa;
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  /* ── BOOKING / DEPOSIT BLOCK ── */
+  .book-block {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 2px solid var(--border);
+  }
+  .book-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .book-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 13px;
+    padding: 4px 0;
+  }
+  .book-row .label { color: var(--muted); }
+  .book-row .amt { font-weight: 700; }
+  .book-row.deposit .amt { color: var(--orange); font-size: 18px; }
+  .book-row.balance .amt { color: var(--muted); }
+
+  .book-policy {
+    margin-top: 14px;
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .book-policy strong { color: var(--text); }
+
+  /* ── CONSULT (CALENDLY) SECTION ── */
+  .consult-section {
+    background: #111;
+    padding: 48px 24px 56px;
+  }
+  .consult-inner { max-width: 900px; margin: 0 auto; }
+  .consult-head { text-align: center; margin-bottom: 28px; }
+  .consult-step {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    background: rgba(216,90,48,0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .consult-title {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+  .consult-sub {
+    color: #b8b8b8;
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .consult-sub strong { color: var(--orange); }
+  .calendly-inline-widget {
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 680px) {
+    .layout { grid-template-columns: 1fr; }
+    .right  { border-left: none; border-top: 1px solid var(--border); min-height: auto; }
+    .pkg-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">🔥 FYRE Bartending</div>
+    <div class="header-sub">Petaluma, CA &nbsp;·&nbsp; Sonoma &nbsp;·&nbsp; Marin &nbsp;·&nbsp; San Francisco</div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- ══ LEFT COLUMN ══ -->
+  <div class="left">
+
+    <!-- Founding Discount Banner -->
+    <div class="discount-banner">
+      <div class="discount-info">
+        <div class="discount-title">🎉 August & September Offer — 10% Off</div>
+        <div class="discount-desc">Book an August or September event and take 10% off your total. Toggle the discount below to see your price. Our thank-you for helping build our Sonoma County portfolio.</div>
+        <div class="slots-left" id="slots-left">Valid for Aug &amp; Sept 2026 events only</div>
+      </div>
+      <button class="toggle" id="t-discount" onclick="toggleAddon('discount', this)"></button>
+    </div>
+
+    <!-- 1. Package -->
+    <div class="section">
+      <div class="section-label">1 · Choose your package</div>
+      <div class="pkg-grid">
+
+        <div class="pkg-card active" onclick="selectPkg(this, 'spark')">
+          <div class="pkg-name">Spark ✦</div>
+          <div class="pkg-tagline">Up to 50 guests &middot; 4 hrs &middot; dry hire</div>
+          <div class="pkg-from">From $500</div>
+          <div class="pkg-includes">
+            <div class="pkg-inc-item">1 RBS-certified bartender</div>
+            <div class="pkg-inc-item">Full bar kit &amp; tools</div>
+            <div class="pkg-inc-item">Beer, wine + simple cocktails</div>
+            <div class="pkg-inc-item">Liability insurance COI</div>
+            <div class="pkg-inc-item">Alcohol shopping guide</div>
+          </div>
+        </div>
+
+        <div class="pkg-card" onclick="selectPkg(this, 'blaze')">
+          <div class="pkg-name">Blaze ✦✦</div>
+          <div class="pkg-tagline">Up to 75 guests &middot; 4 hrs &middot; with setup</div>
+          <div class="pkg-from">From $895</div>
+          <div class="pkg-includes">
+            <div class="pkg-inc-item">1 bartender + pop-up bar</div>
+            <div class="pkg-inc-item">Coolers, ice, cups, napkins</div>
+            <div class="pkg-inc-item">Mixers, juices, garnishes</div>
+            <div class="pkg-inc-item">2 signature cocktails</div>
+            <div class="pkg-inc-item">Infused water station</div>
+            <div class="pkg-inc-item">Custom shopping list</div>
+          </div>
+          <div class="pkg-note">⚠️ 65+ guests requires a 2nd bartender (+$100/hr) — added automatically to your quote.</div>
+        </div>
+
+        <div class="pkg-card" onclick="selectPkg(this, 'inferno')">
+          <div class="pkg-name">Inferno ✦✦✦</div>
+          <div class="pkg-tagline">Up to 150 guests &middot; 5 hrs &middot; full service</div>
+          <div class="pkg-from">From $1,400</div>
+          <div class="pkg-includes">
+            <div class="pkg-inc-item">2 bartenders</div>
+            <div class="pkg-inc-item">Full bar setup + décor &amp; signage</div>
+            <div class="pkg-inc-item">3 signature cocktails</div>
+            <div class="pkg-inc-item">Infused water + signature mocktail</div>
+            <div class="pkg-inc-item">Custom shopping list &amp; consultation</div>
+            <div class="pkg-inc-item">Champagne toast service</div>
+          </div>
+          <div class="pkg-note">⚠️ 125+ guests requires a 3rd bartender (+$100/hr) — added automatically to your quote.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2. Event Details -->
+    <div class="section">
+      <div class="section-label">2 · Event details</div>
+
+      <div class="slider-wrap">
+        <div class="slider-top">
+          <span class="slider-name">Number of guests</span>
+          <span class="slider-val" id="guests-val">50</span>
+        </div>
+        <div class="guest-entry">
+          <label for="guests-input">Type exact count:</label>
+          <input type="number" id="guests-input" min="10" max="200" step="1" value="50"
+                 oninput="onGuestInput(this.value)">
+          <span style="font-size:11px;color:#aaa;">guests</span>
+        </div>
+        <input type="range" id="guests-slider" min="10" max="200" step="5" value="50"
+               oninput="onSlider('guests', this.value)">
+        <div class="slider-hints"><span>10</span><span>75</span><span>150</span><span>200</span></div>
+      </div>
+
+      <div class="slider-wrap">
+        <div class="slider-top">
+          <span class="slider-name">Hours of service</span>
+          <span class="slider-val" id="hours-val">4 hrs</span>
+        </div>
+        <input type="range" id="hours-slider" min="2" max="10" step="1" value="4"
+               oninput="onSlider('hours', this.value)">
+        <div class="slider-hints"><span>2 hrs min</span><span>6 hrs</span><span>10 hrs</span></div>
+      </div>
+
+      <div class="alert" id="bar-alert">
+        &#9888;&#65039; At <strong id="alert-guests">0</strong> guests you'll need
+        <strong id="alert-bars">2</strong> bartenders (1 per ~60 guests).
+        A second bartender is added automatically below.
+      </div>
+    </div>
+
+    <!-- 3. Add-Ons -->
+    <div class="section">
+      <div class="section-label">3 · Add-ons</div>
+      <div id="addon-list"></div>
+    </div>
+
+  </div><!-- /left -->
+
+  <!-- ══ RIGHT COLUMN — QUOTE ══ -->
+  <div class="right">
+    <div class="quote-title">Your estimate</div>
+    <div id="quote-lines"></div>
+    <hr class="divider">
+    <div id="discount-row"></div>
+    <div class="total-row">
+      <span class="total-label">Total</span>
+      <span class="total-amount" id="total-out">$500</span>
+    </div>
+    <span class="benchmark" id="benchmark-badge"></span>
+    <div class="quote-note" id="quote-note"></div>
+    <button class="btn btn-primary" id="copy-btn" onclick="copyQuote()">📋 Copy quote summary</button>
+    <button class="btn btn-secondary" onclick="emailQuote()">✉️ Email this quote</button>
+
+    <!-- ── HOW PAYMENT WORKS / BOOK CONSULT ── -->
+    <div class="book-block">
+      <div class="book-title">How booking works</div>
+
+      <div class="book-row deposit">
+        <span class="label">Deposit to hold your date (50%)</span>
+        <span class="amt" id="deposit-out">$250</span>
+      </div>
+      <div class="book-row balance">
+        <span class="label">Balance due day-of-event</span>
+        <span class="amt" id="balance-out">$250</span>
+      </div>
+
+      <div class="book-policy">
+        Start with a free consult — no payment now. After we confirm your date,
+        we'll send a secure deposit link. The <strong>50% deposit is non-refundable</strong>
+        and locks in your date; the balance is due on the day of your event.
+      </div>
+
+      <button class="btn btn-primary" onclick="bookConsult()">📅 Book Your Free Consult →</button>
+      <button class="btn btn-secondary" onclick="copyQuote()" style="margin-top:8px;">📋 Copy quote to bring to your consult</button>
+    </div>
+
+    <div class="fine-print">Pricing benchmarked against Stir Crazy (Santa Rosa), Wild Craft (Sebastopol) &amp; Pour It On — active 2025 local competitors.</div>
+  </div>
+
+</div><!-- /layout -->
+
+<!-- ══ STEP 2 — FREE CONSULT (CALENDLY) ══ -->
+<div class="consult-section" id="consult">
+  <div class="consult-inner">
+    <div class="consult-head">
+      <div class="consult-step">Step 2</div>
+      <h2 class="consult-title">Book your free consult</h2>
+      <p class="consult-sub">
+        Pick a time that works for you. We'll confirm availability for your date,
+        answer questions, and send your deposit link to lock it in. No payment now.
+        <br><strong>Tip:</strong> hit "Copy quote" above and paste it into the notes when you book.
+      </p>
+    </div>
+
+    <!-- Calendly inline widget -->
+    <div class="calendly-inline-widget"
+         data-url="https://calendly.com/REPLACE_WITH_YOUR_CALENDLY/consult"
+         style="min-width:320px;height:680px;"></div>
+  </div>
+</div>
+<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// BOOKING CONFIG — replace these placeholders once your
+// accounts are ready.
+//
+// 1) CALENDLY: replace the data-url on the .calendly-inline-widget
+//    div (in the "Step 2" section near the bottom of the HTML)
+//    with your real Calendly consult event link, e.g.
+//    https://calendly.com/fyre-bartending/consult
+//
+// 2) STRIPE: these links are NOT used on this page — in your
+//    flow, the client books a free consult first, then YOU send
+//    the deposit link after confirming the date. Keep them here
+//    so the day-of balance flow (text/QR) can reference them.
+//    Use the "Customer chooses price" pricing model, $250 min
+//    on the deposit link.
+// ══════════════════════════════════════════════════════════
+var STRIPE_DEPOSIT_LINK = "https://buy.stripe.com/REPLACE_WITH_DEPOSIT_LINK";
+var STRIPE_BALANCE_LINK = "https://buy.stripe.com/REPLACE_WITH_BALANCE_LINK";
+
+// ── STATE ──────────────────────────────────────────────
+var state = {
+  pkg: 'spark',
+  guests: 50,
+  hours: 4,
+  mocktail: 0,          // 0, 1, or 2 signature mocktails
+  addons: {
+    discount:  false,
+    cocktail:  false,
+    glassware: false,
+    welcome:   false,
+    shopping:  false,
+    ice:       false,
+    champagne: false,
+    secondbar: false,
+    cleanup:   false,
+    tent:      false,
+    travel:    false,
+    gratuity:  false
+  }
+};
+
+// ── ADD-ON CONFIG ──────────────────────────────────────
+// Everything about each add-on lives here: label, description,
+// price, and how it's priced. To add/remove/reprice an add-on,
+// edit this list only — the UI, quote lines, and copy/email
+// summaries all build from it automatically.
+//   type 'flat'     → fixed price, on/off toggle
+//   type 'perguest' → price × guest count, on/off toggle
+//   type 'mocktail' → segmented 0/1/2 selector ($55 / $95)
+//   type 'gratuity' → 20% of the service subtotal, on/off toggle
+//   includedIn      → tiers where this is already bundled (no charge)
+var ADDONS = [
+  { key:'cocktail',  type:'flat',     cost:150, name:'Custom cocktail menu (up to 3 signatures)', costLabel:'+$150 flat', line:'Custom cocktail menu & mixers', desc:'Fresh-squeezed juices, artisan syrups, and a seasonal garnish package — curated for your event theme.' },
+  { key:'mocktail',  type:'mocktail',           name:'Signature mocktail(s)', costLabel:'+$55 (1) · +$95 (2)', desc:'Craft zero-proof cocktails for designated drivers, pregnant guests, sober guests, and teens — quality you control end-to-end.' },
+  { key:'glassware', type:'perguest', perGuest:3, name:'Real glassware rental', costLabel:'+$3 / guest', line:'Real glassware rental', desc:'Ditch the plastic for a polished, upscale look. Priced per guest to cover transport, washing, and breakage.' },
+  { key:'welcome',   type:'flat',     cost:75,  name:'Welcome drink on arrival', costLabel:'+$75 flat', line:'Welcome drink on arrival', desc:'A passed or pre-poured signature drink as guests walk in — high-impact first impression, batched in advance.' },
+  { key:'shopping',  type:'flat',     cost:75,  name:'Alcohol shopping coordination', costLabel:'+$75 (list only) · +$125 (list + delivery)', line:'Alcohol shopping coordination', desc:'Volume calculations + curated Costco or Total Wine shopping list. Optional pickup and delivery to venue.' },
+  { key:'ice',       type:'flat',     cost:60,  name:'Bulk ice service', costLabel:'+$60 flat', line:'Bulk ice service', includedIn:['blaze','inferno'], desc:'We bring the ice — roughly 1.5 lbs per guest. Heavy, easy to underestimate, one less thing for you to haul.' },
+  { key:'champagne', type:'flat',     cost:85,  name:'Champagne toast service', costLabel:'+$85 flat', line:'Champagne toast service', includedIn:['inferno'], desc:'Poured and passed champagne for toasts — perfect for weddings and milestone celebrations.' },
+  { key:'secondbar', type:'flat',     cost:250, name:'Second bar station', costLabel:'+$250 flat', line:'Second bar station', desc:'A second pop-up bar to kill lines at large or spread-out venues. Pairs well with 130+ guest events.' },
+  { key:'cleanup',   type:'flat',     cost:100, name:'Cleanup & haul-away', costLabel:'+$100 flat', line:'Cleanup & haul-away', desc:'Full bar-area breakdown, bottle and can removal, and trash haul-out at the end of the night.' },
+  { key:'tent',      type:'flat',     cost:100, name:'10×10 enclosed tent bar', costLabel:'+$100 flat', line:'10×10 enclosed tent bar', desc:'Fully enclosed 10×10 tent — shade, wind block, and weather protection for the bar station. Keeps service running rain or shine.' },
+  { key:'travel',    type:'flat',     cost:100, name:'Travel surcharge — SF, Marin, East Bay', costLabel:'+$100 flat', line:'Travel surcharge (SF / Marin / East Bay)', desc:'First 30 miles from Petaluma are included. Bridge tolls and extended drive surcharge for destinations across the bay.' },
+  { key:'gratuity',  type:'gratuity',           name:'Hosted gratuity (no tip jar)', costLabel:'+20% on subtotal', desc:'Standard for corporate events and weddings where a tip jar isn\'t appropriate. Applied to the service subtotal.' }
+];
+
+function mocktailPrice(n) { return n === 1 ? 55 : n === 2 ? 95 : 0; }
+function isIncluded(a)     { return a.includedIn && a.includedIn.indexOf(state.pkg) !== -1; }
+
+var PKG = {
+  spark:   { base: 500,  label: 'Spark',   bars: 1, inclHours: 4, guestCap: 50  },
+  blaze:   { base: 895,  label: 'Blaze',   bars: 1, inclHours: 4, guestCap: 75  },
+  inferno: { base: 1400, label: 'Inferno', bars: 2, inclHours: 5, guestCap: 150 }
+};
+
+var EXTRA_HOUR_RATE   = 100;
+var PER_GUEST_OVERAGE = 5;
+var DISCOUNT_RATE     = 0.10;
+var DEPOSIT_RATE      = 0.50;
+
+var currentTotal = 500; // kept in sync by recalc()
+
+// ── INTERACTIONS ───────────────────────────────────────
+function selectPkg(el, id) {
+  document.querySelectorAll('.pkg-card').forEach(function(c) { c.classList.remove('active'); });
+  el.classList.add('active');
+  state.pkg = id;
+  renderAddons();   // included/charged status can change with the tier
+  recalc();
+}
+
+// Build the add-on list from the ADDONS config.
+function renderAddons() {
+  var host = document.getElementById('addon-list');
+  var html = '';
+
+  ADDONS.forEach(function(a) {
+    var included = isIncluded(a);
+
+    // Right-hand control
+    var control;
+    if (included) {
+      control = '<div class="addon-included">✓ Included in ' + PKG[state.pkg].label + '</div>';
+    } else if (a.type === 'mocktail') {
+      control = '<div class="seg">'
+              + '<button class="seg-btn' + (state.mocktail === 0 ? ' active' : '') + '" onclick="setMocktail(0)">None</button>'
+              + '<button class="seg-btn' + (state.mocktail === 1 ? ' active' : '') + '" onclick="setMocktail(1)">1</button>'
+              + '<button class="seg-btn' + (state.mocktail === 2 ? ' active' : '') + '" onclick="setMocktail(2)">2</button>'
+              + '</div>';
+    } else {
+      control = '<button class="toggle' + (state.addons[a.key] ? ' on' : '')
+              + '" onclick="toggleAddon(\'' + a.key + '\', this)"></button>';
+    }
+
+    // Inferno already bundles one mocktail — note it so "add" is clear
+    var extraDesc = '';
+    if (a.type === 'mocktail' && state.pkg === 'inferno') {
+      extraDesc = ' <em>(1 already included in Inferno — this adds more.)</em>';
+    }
+
+    html += '<div class="addon-row">'
+          + '<div class="addon-info">'
+          + '<div class="addon-name">' + a.name + '</div>'
+          + '<div class="addon-desc">' + a.desc + extraDesc + '</div>'
+          + '<div class="addon-cost">' + a.costLabel + '</div>'
+          + '</div>'
+          + control
+          + '</div>';
+  });
+
+  host.innerHTML = html;
+}
+
+function setMocktail(n) {
+  state.mocktail = n;
+  renderAddons();
+  recalc();
+}
+
+function onSlider(key, val) {
+  state[key] = parseInt(val);
+  if (key === 'guests') {
+    document.getElementById('guests-val').textContent = val;
+    document.getElementById('guests-input').value = val;
+  } else {
+    document.getElementById('hours-val').textContent = val + ' hrs';
+  }
+  recalc();
+}
+
+// Typed guest count — keeps the slider and readout in sync.
+function onGuestInput(val) {
+  var n = parseInt(val, 10);
+  if (isNaN(n)) return;              // let them clear the field mid-typing
+  if (n < 10)  n = 10;
+  if (n > 200) n = 200;
+  state.guests = n;
+  document.getElementById('guests-val').textContent = n;
+  document.getElementById('guests-slider').value = n;
+  recalc();
+}
+
+function toggleAddon(key, btn) {
+  state.addons[key] = !state.addons[key];
+  btn.classList.toggle('on');
+  recalc();
+}
+
+function barsNeeded(guests) {
+  return Math.max(1, Math.ceil(guests / 60));
+}
+
+// ── RECALC ─────────────────────────────────────────────
+function recalc() {
+  var d    = PKG[state.pkg];
+  var bars = Math.max(d.bars, barsNeeded(state.guests));
+
+  var extraBars   = Math.max(0, bars - d.bars);
+  var extraHours  = Math.max(0, state.hours - d.inclHours);
+  var guestOver   = Math.max(0, state.guests - d.guestCap);
+
+  // Alert
+  var alertEl = document.getElementById('bar-alert');
+  if (bars > 1) {
+    alertEl.classList.add('show');
+    document.getElementById('alert-guests').textContent = state.guests;
+    document.getElementById('alert-bars').textContent   = bars;
+  } else {
+    alertEl.classList.remove('show');
+  }
+
+  // Costs
+  var usedHours     = Math.max(d.inclHours, state.hours);
+  var extraBarCost  = extraBars  * EXTRA_HOUR_RATE * usedHours;
+  var extraHourCost = extraHours * EXTRA_HOUR_RATE * d.bars;
+  var guestCost     = guestOver  * PER_GUEST_OVERAGE;
+
+  // Add-on costs, driven by the ADDONS config (gratuity handled after subtotal)
+  var addonCost = 0;
+  ADDONS.forEach(function(a) {
+    if (a.type === 'gratuity') return;
+    if (isIncluded(a)) return;                         // bundled in this tier, no charge
+    if (a.type === 'flat'     && state.addons[a.key]) addonCost += a.cost;
+    else if (a.type === 'perguest' && state.addons[a.key]) addonCost += a.perGuest * state.guests;
+    else if (a.type === 'mocktail') addonCost += mocktailPrice(state.mocktail);
+  });
+
+  var subtotal = d.base + extraBarCost + extraHourCost + guestCost + addonCost;
+
+  var gratuityCost = state.addons.gratuity ? Math.round(subtotal * 0.20) : 0;
+  var preDiscount  = subtotal + gratuityCost;
+  var discountAmt  = state.addons.discount ? Math.round(preDiscount * DISCOUNT_RATE) : 0;
+  var total        = preDiscount - discountAmt;
+
+  currentTotal = total;
+
+  // ── LINE ITEMS ──
+  var lines = [
+    { label: d.label + ' package (' + d.inclHours + ' hrs, up to ' + d.guestCap + ' guests)', amt: d.base, show: true },
+    { label: 'Extra bartender' + (extraBars > 1 ? 's' : '') + ' — ' + extraBars + ' × ' + usedHours + ' hrs @ $' + EXTRA_HOUR_RATE + '/hr', amt: extraBarCost, show: extraBarCost > 0 },
+    { label: 'Extra hours — ' + extraHours + ' hrs @ $' + EXTRA_HOUR_RATE + '/hr', amt: extraHourCost, show: extraHourCost > 0 },
+    { label: 'Guest overage — ' + guestOver + ' guests over cap @ $' + PER_GUEST_OVERAGE + '/pp', amt: guestCost, show: guestCost > 0 }
+  ];
+
+  // Add-on line items (config-driven, same order as the UI)
+  ADDONS.forEach(function(a) {
+    if (a.type === 'gratuity') return;
+    if (isIncluded(a)) return;
+    if (a.type === 'flat' && state.addons[a.key]) {
+      lines.push({ label: a.line, amt: a.cost, show: true });
+    } else if (a.type === 'perguest' && state.addons[a.key]) {
+      lines.push({ label: a.line + ' — ' + state.guests + ' guests @ $' + a.perGuest + '/pp', amt: a.perGuest * state.guests, show: true });
+    } else if (a.type === 'mocktail' && state.mocktail > 0) {
+      lines.push({ label: 'Signature mocktail' + (state.mocktail > 1 ? 's' : '') + ' (×' + state.mocktail + ')', amt: mocktailPrice(state.mocktail), show: true });
+    }
+  });
+
+  // Gratuity always shows last, just above the total
+  lines.push({ label: 'Hosted gratuity (20%)', amt: gratuityCost, show: state.addons.gratuity });
+
+  var html = '';
+  lines.forEach(function(l) {
+    if (l.show) {
+      html += '<div class="q-line">'
+            + '<span class="q-label">' + l.label + '</span>'
+            + '<span class="q-amount">$' + l.amt.toLocaleString() + '</span>'
+            + '</div>';
+    }
+  });
+  document.getElementById('quote-lines').innerHTML = html;
+
+  // Discount row
+  var dRow = '';
+  if (state.addons.discount) {
+    dRow = '<div class="discount-line">'
+         + '<span>🎉 Aug/Sept discount (10%)</span>'
+         + '<span>− $' + discountAmt.toLocaleString() + '</span>'
+         + '</div>';
+  }
+  document.getElementById('discount-row').innerHTML = dRow;
+
+  // Total
+  document.getElementById('total-out').textContent = '$' + total.toLocaleString();
+
+  // Benchmark
+  var benchmarks = {
+    spark:   '📍 Stir Crazy "Baby Bar" — $500 for 50 guests / 2 hrs',
+    blaze:   '📍 Stir Crazy "Satellite Bar" — $895 for 75 guests / 4 hrs',
+    inferno: '📍 Wild Craft "Sequoia" — $1,100 for 75 guests / 4 hrs (no champagne service)'
+  };
+  document.getElementById('benchmark-badge').textContent = benchmarks[state.pkg];
+
+  // Note
+  var tipNote = state.addons.gratuity ? '' : ' Tip jar or add hosted gratuity for corporate/wedding events.';
+  var discNote = state.addons.discount
+    ? ' <strong style="color:#2a7a4b">Aug/Sept 10% discount applied.</strong>'
+    : '';
+  document.getElementById('quote-note').innerHTML =
+    '<strong>' + bars + ' bartender' + (bars > 1 ? 's' : '') + ' &nbsp;·&nbsp; '
+    + state.guests + ' guests &nbsp;·&nbsp; '
+    + state.hours + ' hrs</strong><br>'
+    + 'You supply the alcohol — FYRE brings everything else.'
+    + tipNote + discNote;
+
+  // Deposit / balance
+  updateBookingBlock();
+}
+
+// ── BOOKING / DEPOSIT ───────────────────────────────────
+function updateBookingBlock() {
+  var deposit = Math.round(currentTotal * DEPOSIT_RATE);
+  var balance = currentTotal - deposit;
+  document.getElementById('deposit-out').textContent = '$' + deposit.toLocaleString();
+  document.getElementById('balance-out').textContent = '$' + balance.toLocaleString();
+}
+
+function bookConsult() {
+  var el = document.getElementById('consult');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── COPY / EMAIL ────────────────────────────────────────
+function copyQuote() {
+  var total   = document.getElementById('total-out').textContent;
+  var d       = PKG[state.pkg];
+  var bars    = Math.max(d.bars, barsNeeded(state.guests));
+  var addons  = [];
+  ADDONS.forEach(function(a) {
+    if (a.type === 'gratuity') { if (state.addons.gratuity) addons.push('Hosted gratuity (20%)'); return; }
+    if (isIncluded(a)) return;
+    if (a.type === 'mocktail') { if (state.mocktail > 0) addons.push('Signature mocktail' + (state.mocktail > 1 ? 's' : '') + ' (×' + state.mocktail + ')'); return; }
+    if (state.addons[a.key]) addons.push(a.name);
+  });
+  if (state.addons.discount) addons.push('Aug/Sept discount (10% off)');
+
+  var deposit = Math.round(currentTotal * DEPOSIT_RATE);
+  var balance = currentTotal - deposit;
+
+  var txt = 'FYRE Bartending — Event Quote\n'
+          + '================================\n'
+          + 'Package:  ' + d.label + '\n'
+          + 'Guests:   ' + state.guests + '\n'
+          + 'Hours:    ' + state.hours + '\n'
+          + 'Staff:    ' + bars + ' bartender' + (bars > 1 ? 's' : '') + '\n'
+          + (addons.length ? 'Add-ons:  ' + addons.join(', ') + '\n' : '')
+          + '--------------------------------\n'
+          + 'TOTAL:    ' + total + '\n'
+          + 'Deposit (50%, due to book):  $' + deposit.toLocaleString() + '\n'
+          + 'Balance (due day-of):        $' + balance.toLocaleString() + '\n\n'
+          + 'Book at fyre-bar.com\n'
+          + 'Serving Sonoma, Marin & San Francisco';
+
+  navigator.clipboard.writeText(txt).then(function() {
+    var btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied to clipboard!';
+    setTimeout(function() { btn.textContent = '📋 Copy quote summary'; }, 2200);
+  }).catch(function() {
+    alert('Quote:\n\n' + txt);
+  });
+}
+
+function emailQuote() {
+  var total  = document.getElementById('total-out').textContent;
+  var d      = PKG[state.pkg];
+  var bars   = Math.max(d.bars, barsNeeded(state.guests));
+  var deposit = Math.round(currentTotal * DEPOSIT_RATE);
+  var balance = currentTotal - deposit;
+  var subject = encodeURIComponent('FYRE Bartending Quote — ' + d.label + ' Package, ' + total);
+  var body    = encodeURIComponent(
+    'Hi,\n\nHere is my FYRE Bartending event quote:\n\n'
+    + 'Package: ' + d.label + '\n'
+    + 'Guests: ' + state.guests + '\n'
+    + 'Hours: ' + state.hours + '\n'
+    + 'Bartenders: ' + bars + '\n'
+    + 'Estimated Total: ' + total + '\n'
+    + 'Deposit (50%, due to book): $' + deposit.toLocaleString() + '\n'
+    + 'Balance (due day-of): $' + balance.toLocaleString() + '\n\n'
+    + 'I\'d love to confirm the details. Reach me at fyre-bar.com\n\n'
+    + '— FYRE Bartending | Petaluma, CA'
+  );
+  window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+}
+
+// ── INIT ────────────────────────────────────────────────
+renderAddons();
+recalc();
+</script>
+</body>
+</html>

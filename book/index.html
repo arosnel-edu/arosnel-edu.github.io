@@ -3,514 +3,380 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FYRE Bartending – Event Quote Builder</title>
+<title>FYRE Bartending – Build Your Quote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+  *, *:before, *:after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --orange: #D85A30;
-    --orange-dark: #B04520;
-    --orange-light: #FAECE7;
-    --text: #1a1a1a;
-    --muted: #666;
-    --border: #e0e0e0;
-    --bg: #f5f5f5;
-    --white: #ffffff;
-    --green: #2a7a4b;
-    --gold: #b8860b;
-    --gold-bg: #fffbea;
-    --gold-border: #f0c040;
-    --radius: 10px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
+    --black:     #0d0d0d;
+    --charcoal:  #1a1a1a;
+    --ember:     #c8622a;
+    --ember-lt:  #e07a42;
+    --cream:     #f5f0e8;
+    --cream-dk:  #e8e0d0;
+    --white:     #ffffff;
+    --text-dark: #1a1a1a;
+    --text-mid:  #555555;
+    --border:    #ded5c4;
+    --green:     #2a7a4b;
+    --gold-bg:   #fbf4e6;
+    --font-head: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Jost', Helvetica, Arial, sans-serif;
   }
 
-  /* ── HEADER ── */
-  .header {
-    background: #111;
-    padding: 16px 24px;
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    font-weight: 300;
+    color: var(--text-dark);
+    background: var(--cream);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── NAV ── */
+  .site-nav {
+    background: var(--black);
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    padding: 18px 48px;
   }
-  .header-logo { font-size: 20px; font-weight: 700; color: var(--orange); letter-spacing: -0.5px; }
-  .header-sub  { font-size: 12px; color: #999; margin-top: 2px; }
+  .nav-logo {
+    font-family: var(--font-head);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.08em;
+  }
+  .nav-logo span { color: var(--ember); }
+  .nav-links { list-style: none; display: flex; gap: 32px; }
+  .nav-links a {
+    font-size: 0.74rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.82);
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--ember-lt); }
+
+  /* ── PAGE INTRO ── */
+  .page-intro {
+    background: var(--cream);
+    text-align: center;
+    padding: 56px 24px 8px;
+  }
+  .page-eyebrow {
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 14px;
+  }
+  .page-title {
+    font-family: var(--font-head);
+    font-size: 3.4rem;
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--text-dark);
+    margin-bottom: 14px;
+  }
+  .page-title em { font-style: italic; color: var(--ember); }
+  .page-intro-sub {
+    font-size: 1rem;
+    color: var(--text-mid);
+    max-width: 520px;
+    margin: 0 auto;
+  }
 
   /* ── LAYOUT ── */
   .layout {
     display: grid;
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: 1fr 340px;
     gap: 0;
     align-items: start;
+    max-width: 1180px;
+    margin: 0 auto;
   }
-  .left  { padding: 24px; }
+  .left  { padding: 40px 40px 60px; }
   .right {
     background: var(--white);
+    border-top: 3px solid var(--ember);
     border-left: 1px solid var(--border);
-    padding: 24px;
-    min-height: calc(100vh - 56px);
+    padding: 32px 28px;
+    min-height: 100%;
   }
 
   /* ── SECTION ── */
-  .section { margin-bottom: 28px; }
+  .section { margin-bottom: 40px; }
   .section-label {
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    letter-spacing: 0.09em;
-    color: var(--muted);
-    margin-bottom: 12px;
+    color: var(--ember);
+    margin-bottom: 18px;
   }
 
   /* ── PACKAGE CARDS ── */
-  .pkg-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
+  .pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .pkg-card {
     background: var(--white);
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px;
+    border: 1px solid var(--border);
+    padding: 22px 18px;
     cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     user-select: none;
   }
-  .pkg-card:hover { border-color: #bbb; }
+  .pkg-card:hover { border-color: var(--ember-lt); }
   .pkg-card.active {
-    border-color: var(--orange);
-    background: var(--orange-light);
+    border-color: var(--ember);
+    box-shadow: inset 0 3px 0 var(--ember);
   }
   .pkg-name {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 3px;
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 4px;
+    color: var(--text-dark);
   }
-  .pkg-card.active .pkg-name { color: var(--orange-dark); }
-  .pkg-tagline {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.4;
-    margin-bottom: 8px;
-  }
-  .pkg-from {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-  .pkg-card.active .pkg-from { color: var(--orange); }
-  .pkg-includes {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
-  }
-  .pkg-card.active .pkg-includes { border-color: #e8c4b8; }
+  .pkg-card.active .pkg-name { color: var(--ember); }
+  .pkg-tagline { font-size: 0.8rem; color: var(--text-mid); line-height: 1.5; margin-bottom: 10px; }
+  .pkg-from { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.05em; color: var(--text-mid); text-transform: uppercase; }
+  .pkg-card.active .pkg-from { color: var(--ember); }
+  .pkg-includes { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
   .pkg-inc-item {
-    font-size: 11px;
-    color: var(--muted);
-    padding: 2px 0;
+    font-size: 0.78rem;
+    color: var(--text-mid);
+    padding: 3px 0;
     display: flex;
-    gap: 5px;
-    line-height: 1.4;
+    gap: 9px;
+    align-items: center;
+    line-height: 1.5;
   }
   .pkg-inc-item::before {
-    content: '✓';
-    color: var(--green);
-    font-weight: 700;
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--ember);
     flex-shrink: 0;
   }
-
   .pkg-note {
-    margin-top: 8px;
-    font-size: 10.5px;
-    line-height: 1.4;
-    color: #7a5c00;
+    margin-top: 12px;
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: #8a5a1c;
     background: var(--gold-bg);
-    border: 1px solid var(--gold-border);
-    border-radius: 6px;
-    padding: 5px 7px;
+    border-left: 2px solid var(--ember);
+    padding: 8px 10px;
   }
 
-  /* ── GUEST NUMBER INPUT ── */
-  .guest-entry {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  .guest-entry label {
-    font-size: 12px;
-    color: var(--muted);
-  }
+  /* ── GUEST / DATE / TIME INPUTS ── */
+  .guest-entry { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .guest-entry label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid); }
   .guest-entry input[type="number"] {
-    width: 90px;
-    padding: 7px 9px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    outline: none;
-    font-family: inherit;
+    width: 92px; padding: 9px 10px; font-size: 1rem; font-weight: 400;
+    color: var(--text-dark); background: var(--cream);
+    border: 1px solid var(--border); outline: none; font-family: var(--font-body);
   }
-  .guest-entry input[type="number"]:focus { border-color: var(--orange); }
+  .guest-entry input[type="number"]:focus { border-color: var(--ember); }
+
+  .datetime-row { display: flex; gap: 14px; margin-bottom: 8px; }
+  .dt-field { flex: 1; }
+  .dt-field label {
+    display: block; font-size: 0.68rem; font-weight: 400; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--text-mid); margin-bottom: 7px;
+  }
+  .dt-field input {
+    width: 100%; padding: 10px 12px; font-size: 0.95rem; color: var(--text-dark);
+    background: var(--cream); border: 1px solid var(--border); outline: none; font-family: var(--font-body);
+  }
+  .dt-field input:focus { border-color: var(--ember); }
+  .dt-hint { font-size: 0.78rem; font-weight: 400; color: var(--green); min-height: 16px; margin-bottom: 18px; }
 
   /* ── SLIDERS ── */
-  .slider-wrap { margin-bottom: 18px; }
-  .slider-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 6px;
-  }
-  .slider-name { font-size: 14px; }
-  .slider-val  { font-size: 14px; font-weight: 700; color: var(--orange); }
+  .slider-wrap { margin-bottom: 22px; }
+  .slider-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .slider-name { font-size: 0.9rem; color: var(--text-dark); }
+  .slider-val  { font-size: 0.9rem; font-weight: 500; color: var(--ember); }
   input[type="range"] {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 5px;
-    background: var(--border);
-    border-radius: 3px;
-    outline: none;
-    cursor: pointer;
+    -webkit-appearance: none; width: 100%; height: 3px;
+    background: var(--cream-dk); outline: none; cursor: pointer;
   }
   input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--orange);
-    cursor: pointer;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--ember); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.25);
   }
   input[type="range"]::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--orange);
-    cursor: pointer;
-    border: none;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    width: 18px; height: 18px; border-radius: 50%; background: var(--ember);
+    cursor: pointer; border: none; box-shadow: 0 1px 4px rgba(0,0,0,0.25);
   }
-  .slider-hints {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: #aaa;
-    margin-top: 4px;
-  }
+  .slider-hints { display: flex; justify-content: space-between; font-size: 0.7rem; color: #b3a892; margin-top: 5px; }
 
   /* ── ALERT ── */
   .alert {
-    display: none;
-    background: var(--gold-bg);
-    border: 1px solid var(--gold-border);
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 12px;
-    color: #7a5c00;
-    line-height: 1.5;
-    margin-top: 4px;
+    display: none; background: var(--gold-bg); border-left: 2px solid var(--ember);
+    padding: 11px 13px; font-size: 0.78rem; color: #8a5a1c; line-height: 1.55; margin-top: 6px;
   }
   .alert.show { display: block; }
 
   /* ── ADD-ON ROWS ── */
   .addon-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 13px 0;
-    border-bottom: 1px solid var(--border);
-    gap: 14px;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 15px 0; border-bottom: 1px solid var(--border); gap: 16px;
   }
   .addon-row:last-child { border-bottom: none; }
-  .addon-info  { flex: 1; }
-  .addon-name  { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
-  .addon-desc  { font-size: 12px; color: var(--muted); line-height: 1.4; }
-  .addon-cost  { font-size: 12px; color: var(--orange); font-weight: 600; margin-top: 3px; }
+  .addon-info { flex: 1; }
+  .addon-name { font-size: 0.92rem; font-weight: 400; color: var(--text-dark); margin-bottom: 3px; }
+  .addon-desc { font-size: 0.8rem; color: var(--text-mid); line-height: 1.5; }
+  .addon-cost { font-size: 0.78rem; color: var(--ember); font-weight: 500; margin-top: 4px; letter-spacing: 0.03em; }
 
   /* ── TOGGLE ── */
   .toggle {
-    width: 44px;
-    height: 26px;
-    background: #ccc;
-    border-radius: 13px;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    transition: background 0.2s;
-    flex-shrink: 0;
-    margin-top: 2px;
+    width: 46px; height: 26px; background: var(--cream-dk); border-radius: 13px; border: none;
+    cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; margin-top: 2px;
   }
-  .toggle.on { background: var(--orange); }
+  .toggle.on { background: var(--ember); }
   .toggle::after {
-    content: '';
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: white;
-    transition: left 0.18s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
+    border-radius: 50%; background: #fff; transition: left 0.18s; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
-  .toggle.on::after { left: 21px; }
+  .toggle.on::after { left: 23px; }
 
-  /* ── SEGMENTED CONTROL (mocktails) ── */
-  .seg {
-    display: inline-flex;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
+  /* ── SEGMENTED CONTROL ── */
+  .seg { display: inline-flex; border: 1px solid var(--border); flex-shrink: 0; margin-top: 2px; }
   .seg-btn {
-    border: none;
-    background: var(--white);
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 600;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-family: inherit;
-    border-left: 1px solid var(--border);
+    border: none; background: var(--white); color: var(--text-mid); font-size: 0.8rem; font-weight: 400;
+    padding: 6px 12px; cursor: pointer; font-family: var(--font-body); border-left: 1px solid var(--border);
   }
   .seg-btn:first-child { border-left: none; }
-  .seg-btn.active { background: var(--orange); color: #fff; }
+  .seg-btn.active { background: var(--ember); color: #fff; }
 
   /* ── INCLUDED BADGE ── */
   .addon-included {
-    flex-shrink: 0;
-    margin-top: 4px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--green);
-    background: #eef7f2;
-    border-radius: 6px;
-    padding: 4px 8px;
-    white-space: nowrap;
+    flex-shrink: 0; margin-top: 4px; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.05em;
+    color: var(--green); background: #edf5ef; padding: 5px 9px; white-space: nowrap;
   }
 
-  /* ── FOUNDING DISCOUNT BANNER ── */
+  /* ── DISCOUNT BANNER ── */
   .discount-banner {
-    background: var(--gold-bg);
-    border: 1.5px solid var(--gold-border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 14px;
-    margin-bottom: 28px;
+    background: rgba(200,98,42,0.07); border: 1px solid rgba(200,98,42,0.3);
+    padding: 16px 18px; display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; margin-bottom: 36px;
   }
   .discount-info .discount-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--gold);
-    margin-bottom: 3px;
+    font-family: var(--font-head); font-size: 1.25rem; font-weight: 400; color: var(--ember); margin-bottom: 4px;
   }
-  .discount-info .discount-desc {
-    font-size: 12px;
-    color: #7a5c00;
-    line-height: 1.4;
-  }
-  .slots-left {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--orange);
-    margin-top: 4px;
-  }
+  .discount-info .discount-desc { font-size: 0.82rem; color: var(--text-mid); line-height: 1.5; }
+  .slots-left { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ember); margin-top: 6px; }
 
   /* ── QUOTE PANEL ── */
   .quote-title {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-bottom: 14px;
+    font-size: 0.68rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.28em;
+    color: var(--ember); margin-bottom: 18px;
   }
-  .q-line {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 5px 0;
-    font-size: 13px;
-    gap: 8px;
-  }
-  .q-label  { color: var(--muted); flex: 1; line-height: 1.35; }
-  .q-amount { font-weight: 600; color: var(--text); white-space: nowrap; }
-  .q-strike { text-decoration: line-through; color: #bbb; }
-  .divider  { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
-
-  .discount-line {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 0;
-    font-size: 13px;
-    color: var(--green);
-    font-weight: 600;
-  }
-
-  .total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 8px;
-  }
-  .total-label  { font-size: 15px; font-weight: 700; }
-  .total-amount { font-size: 32px; font-weight: 800; color: var(--orange); }
-
+  .q-line { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; font-size: 0.85rem; gap: 8px; }
+  .q-label { color: var(--text-mid); flex: 1; line-height: 1.4; }
+  .q-amount { font-weight: 500; color: var(--text-dark); white-space: nowrap; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+  .discount-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85rem; color: var(--green); font-weight: 500; }
+  .total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+  .total-label { font-size: 0.95rem; font-weight: 500; letter-spacing: 0.03em; text-transform: uppercase; }
+  .total-amount { font-family: var(--font-head); font-size: 2.8rem; font-weight: 300; color: var(--ember); }
   .benchmark {
-    display: block;
-    background: #eef7f2;
-    color: var(--green);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 5px 8px;
-    border-radius: 5px;
-    margin-top: 12px;
-    line-height: 1.4;
+    display: block; background: var(--cream); border-left: 2px solid var(--ember); color: var(--text-mid);
+    font-size: 0.72rem; padding: 7px 10px; margin-top: 14px; line-height: 1.5;
   }
-  .quote-note {
-    background: #f5f5f5;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.5;
-    margin-top: 12px;
-  }
-  .quote-note strong { color: var(--text); }
+  .quote-note { background: var(--cream); padding: 11px 13px; font-size: 0.78rem; color: var(--text-mid); line-height: 1.6; margin-top: 14px; }
+  .quote-note strong { color: var(--text-dark); }
 
+  /* ── BUTTONS ── */
   .btn {
-    display: block;
-    width: 100%;
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: var(--radius);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    text-align: center;
-    transition: background 0.15s, color 0.15s;
-    border: none;
+    display: block; width: 100%; margin-top: 14px; padding: 14px; font-family: var(--font-body);
+    font-size: 0.76rem; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; text-align: center; border: 1px solid var(--ember); transition: background 0.3s, color 0.3s;
   }
-  .btn-primary { background: var(--orange); color: white; }
-  .btn-primary:hover { background: var(--orange-dark); }
-  .btn-secondary {
-    background: transparent;
-    border: 2px solid var(--orange);
-    color: var(--orange);
-  }
-  .btn-secondary:hover { background: var(--orange-light); }
+  .btn-primary { background: var(--ember); color: #fff; }
+  .btn-primary:hover { background: var(--ember-lt); border-color: var(--ember-lt); }
+  .btn-secondary { background: transparent; color: var(--ember); }
+  .btn-secondary:hover { background: var(--ember); color: #fff; }
 
-  .fine-print {
-    font-size: 11px;
-    color: #aaa;
-    text-align: center;
-    margin-top: 12px;
-    line-height: 1.5;
-  }
+  .fine-print { font-size: 0.7rem; color: var(--text-mid); text-align: center; margin-top: 16px; line-height: 1.6; }
 
   /* ── BOOKING / DEPOSIT BLOCK ── */
-  .book-block {
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 2px solid var(--border);
-  }
-  .book-title {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-  .book-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-size: 13px;
-    padding: 4px 0;
-  }
-  .book-row .label { color: var(--muted); }
-  .book-row .amt { font-weight: 700; }
-  .book-row.deposit .amt { color: var(--orange); font-size: 18px; }
-  .book-row.balance .amt { color: var(--muted); }
-
-  .book-policy {
-    margin-top: 14px;
-    font-size: 11.5px;
-    color: var(--muted);
-    line-height: 1.6;
-    background: #f5f5f5;
-    border-radius: 8px;
-    padding: 10px 12px;
-  }
-  .book-policy strong { color: var(--text); }
+  .book-block { margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--border); }
+  .book-title { font-size: 0.68rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.24em; color: var(--ember); margin-bottom: 12px; }
+  .book-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.85rem; padding: 5px 0; }
+  .book-row .label { color: var(--text-mid); }
+  .book-row .amt { font-weight: 500; }
+  .book-row.deposit .amt { color: var(--ember); font-size: 1.15rem; font-family: var(--font-head); font-weight: 400; }
+  .book-row.balance .amt { color: var(--text-mid); }
+  .book-policy { margin-top: 14px; font-size: 0.76rem; color: var(--text-mid); line-height: 1.65; background: var(--cream); padding: 11px 13px; }
+  .book-policy strong { color: var(--text-dark); }
 
   /* ── CONSULT (CALENDLY) SECTION ── */
-  .consult-section {
-    background: #111;
-    padding: 48px 24px 56px;
-  }
+  .consult-section { background: var(--black); padding: 72px 24px 80px; }
   .consult-inner { max-width: 900px; margin: 0 auto; }
-  .consult-head { text-align: center; margin-bottom: 28px; }
+  .consult-head { text-align: center; margin-bottom: 32px; }
   .consult-step {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--orange);
-    background: rgba(216,90,48,0.15);
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-bottom: 12px;
+    display: inline-block; font-size: 0.68rem; font-weight: 400; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--ember); margin-bottom: 14px;
   }
-  .consult-title {
-    color: #fff;
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 10px;
-  }
-  .consult-sub {
-    color: #b8b8b8;
-    font-size: 14px;
-    line-height: 1.6;
-    max-width: 560px;
-    margin: 0 auto;
-  }
-  .consult-sub strong { color: var(--orange); }
-  .calendly-inline-widget {
-    background: #fff;
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
+  .consult-title { font-family: var(--font-head); color: var(--white); font-size: 2.8rem; font-weight: 300; margin-bottom: 12px; }
+  .consult-title em { font-style: italic; color: var(--ember-lt); }
+  .consult-sub { color: rgba(255,255,255,0.6); font-size: 0.95rem; line-height: 1.7; max-width: 560px; margin: 0 auto; }
+  .consult-sub strong { color: var(--ember-lt); }
+  .calendly-inline-widget { background: #fff; overflow: hidden; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--black); padding: 48px 24px; text-align: center; }
+  .footer-logo { font-family: var(--font-head); font-size: 1.8rem; font-weight: 300; color: var(--white); letter-spacing: 0.1em; margin-bottom: 10px; }
+  .footer-logo span { color: var(--ember); }
+  .footer-tagline { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 28px; list-style: none; margin-bottom: 24px; }
+  .footer-links a { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); transition: color 0.25s; }
+  .footer-links a:hover { color: var(--ember); }
+  .footer-copy { font-size: 0.7rem; color: rgba(255,255,255,0.22); letter-spacing: 0.1em; }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 680px) {
+  @media (max-width: 820px) {
+    .site-nav { padding: 16px 24px; }
+    .nav-links { gap: 18px; }
     .layout { grid-template-columns: 1fr; }
-    .right  { border-left: none; border-top: 1px solid var(--border); min-height: auto; }
+    .left { padding: 32px 24px 40px; }
+    .right { border-left: none; border-top: 3px solid var(--ember); }
     .pkg-grid { grid-template-columns: 1fr; }
+    .page-title { font-size: 2.6rem; }
+    .consult-title { font-size: 2.1rem; }
+  }
+  @media (max-width: 520px) {
+    .nav-links { display: none; }
+    .datetime-row { flex-direction: column; gap: 8px; }
   }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div>
-    <div class="header-logo">🔥 FYRE Bartending</div>
-    <div class="header-sub">Petaluma, CA &nbsp;·&nbsp; Sonoma &nbsp;·&nbsp; Marin &nbsp;·&nbsp; San Francisco</div>
-  </div>
+<nav class="site-nav">
+  <a href="/" class="nav-logo">FY<span>R</span>E</a>
+  <ul class="nav-links">
+    <li><a href="/#about">About</a></li>
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#gallery">Gallery</a></li>
+    <li><a href="/book">Book</a></li>
+  </ul>
+</nav>
+
+<div class="page-intro">
+  <p class="page-eyebrow">Sonoma &bull; Marin &bull; San Francisco</p>
+  <h1 class="page-title">Build Your <em>Quote</em></h1>
+  <p class="page-intro-sub">Choose a package, tailor the details, and book a free consult to lock in your date.</p>
 </div>
 
 <div class="layout">
@@ -583,6 +449,18 @@
     <div class="section">
       <div class="section-label">2 · Event details</div>
 
+      <div class="datetime-row">
+        <div class="dt-field">
+          <label for="event-date">Event date</label>
+          <input type="date" id="event-date" onchange="onEventDate(this.value)">
+        </div>
+        <div class="dt-field">
+          <label for="event-time">Start time</label>
+          <input type="time" id="event-time" onchange="onEventTime(this.value)">
+        </div>
+      </div>
+      <div class="dt-hint" id="dt-hint"></div>
+
       <div class="slider-wrap">
         <div class="slider-top">
           <span class="slider-name">Number of guests</span>
@@ -637,7 +515,7 @@
     <span class="benchmark" id="benchmark-badge"></span>
     <div class="quote-note" id="quote-note"></div>
     <button class="btn btn-primary" id="copy-btn" onclick="copyQuote()">📋 Copy quote summary</button>
-    <button class="btn btn-secondary" onclick="emailQuote()">✉️ Email this quote</button>
+    <button class="btn btn-secondary" onclick="emailQuote()">🔥 I'm ready! Email it to FYRE</button>
 
     <!-- ── HOW PAYMENT WORKS / BOOK CONSULT ── -->
     <div class="book-block">
@@ -713,6 +591,8 @@ var state = {
   pkg: 'spark',
   guests: 50,
   hours: 4,
+  date: '',             // YYYY-MM-DD from the date picker
+  time: '',             // HH:MM (24h) from the time picker
   mocktail: 0,          // 0, 1, or 2 signature mocktails
   addons: {
     discount:  false,
@@ -723,7 +603,6 @@ var state = {
     ice:       false,
     champagne: false,
     secondbar: false,
-    cleanup:   false,
     tent:      false,
     travel:    false,
     gratuity:  false
@@ -742,14 +621,13 @@ var state = {
 //   includedIn      → tiers where this is already bundled (no charge)
 var ADDONS = [
   { key:'cocktail',  type:'flat',     cost:150, name:'Custom cocktail menu (up to 3 signatures)', costLabel:'+$150 flat', line:'Custom cocktail menu & mixers', desc:'Fresh-squeezed juices, artisan syrups, and a seasonal garnish package — curated for your event theme.' },
-  { key:'mocktail',  type:'mocktail',           name:'Signature mocktail(s)', costLabel:'+$55 (1) · +$95 (2)', desc:'Craft zero-proof cocktails for designated drivers, pregnant guests, sober guests, and teens — quality you control end-to-end.' },
+  { key:'mocktail',  type:'mocktail',           name:'Signature mocktail(s)', costLabel:'+$55 (1) · +$95 (2)', desc:'Craft zero-proof cocktails that drink every bit as bold and layered as the real thing — fresh juices, house syrups, and real technique. Alcohol-free never tasted this good.' },
   { key:'glassware', type:'perguest', perGuest:3, name:'Real glassware rental', costLabel:'+$3 / guest', line:'Real glassware rental', desc:'Ditch the plastic for a polished, upscale look. Priced per guest to cover transport, washing, and breakage.' },
   { key:'welcome',   type:'flat',     cost:75,  name:'Welcome drink on arrival', costLabel:'+$75 flat', line:'Welcome drink on arrival', desc:'A passed or pre-poured signature drink as guests walk in — high-impact first impression, batched in advance.' },
   { key:'shopping',  type:'flat',     cost:75,  name:'Alcohol shopping coordination', costLabel:'+$75 (list only) · +$125 (list + delivery)', line:'Alcohol shopping coordination', desc:'Volume calculations + curated Costco or Total Wine shopping list. Optional pickup and delivery to venue.' },
   { key:'ice',       type:'flat',     cost:60,  name:'Bulk ice service', costLabel:'+$60 flat', line:'Bulk ice service', includedIn:['blaze','inferno'], desc:'We bring the ice — roughly 1.5 lbs per guest. Heavy, easy to underestimate, one less thing for you to haul.' },
   { key:'champagne', type:'flat',     cost:85,  name:'Champagne toast service', costLabel:'+$85 flat', line:'Champagne toast service', includedIn:['inferno'], desc:'Poured and passed champagne for toasts — perfect for weddings and milestone celebrations.' },
   { key:'secondbar', type:'flat',     cost:250, name:'Second bar station', costLabel:'+$250 flat', line:'Second bar station', desc:'A second pop-up bar to kill lines at large or spread-out venues. Pairs well with 130+ guest events.' },
-  { key:'cleanup',   type:'flat',     cost:100, name:'Cleanup & haul-away', costLabel:'+$100 flat', line:'Cleanup & haul-away', desc:'Full bar-area breakdown, bottle and can removal, and trash haul-out at the end of the night.' },
   { key:'tent',      type:'flat',     cost:100, name:'10×10 enclosed tent bar', costLabel:'+$100 flat', line:'10×10 enclosed tent bar', desc:'Fully enclosed 10×10 tent — shade, wind block, and weather protection for the bar station. Keeps service running rain or shine.' },
   { key:'travel',    type:'flat',     cost:100, name:'Travel surcharge — SF, Marin, East Bay', costLabel:'+$100 flat', line:'Travel surcharge (SF / Marin / East Bay)', desc:'First 30 miles from Petaluma are included. Bridge tolls and extended drive surcharge for destinations across the bay.' },
   { key:'gratuity',  type:'gratuity',           name:'Hosted gratuity (no tip jar)', costLabel:'+20% on subtotal', desc:'Standard for corporate events and weddings where a tip jar isn\'t appropriate. Applied to the service subtotal.' }
@@ -826,6 +704,43 @@ function setMocktail(n) {
   state.mocktail = n;
   renderAddons();
   recalc();
+}
+
+// ── DATE / TIME ─────────────────────────────────────────
+function onEventDate(v) { state.date = v; updateDateHint(); recalc(); }
+function onEventTime(v) { state.time = v; recalc(); }
+
+// Aug/Sept 2026 events qualify for the 10% offer
+function dateQualifies(v) {
+  if (!v) return false;
+  var m = parseInt(v.substring(5, 7), 10);
+  return m === 8 || m === 9;
+}
+
+function updateDateHint() {
+  var hint = document.getElementById('dt-hint');
+  if (dateQualifies(state.date)) {
+    hint.textContent = state.addons.discount
+      ? '✓ Aug/Sept 10% offer applied.'
+      : '✓ This date qualifies for the 10% August/September offer — toggle it at the top.';
+  } else {
+    hint.textContent = '';
+  }
+}
+
+function fmtDate(v) {
+  if (!v) return '';
+  var d = new Date(v + 'T00:00:00');   // no timezone shift
+  return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function fmtTime(v) {
+  if (!v) return '';
+  var parts = v.split(':');
+  var h = parseInt(parts[0], 10);
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  var h12 = h % 12; if (h12 === 0) h12 = 12;
+  return h12 + ':' + parts[1] + ' ' + ampm;
 }
 
 function onSlider(key, val) {
@@ -966,12 +881,20 @@ function recalc() {
   var discNote = state.addons.discount
     ? ' <strong style="color:#2a7a4b">Aug/Sept 10% discount applied.</strong>'
     : '';
+  var whenLine = '';
+  if (state.date || state.time) {
+    var when = [fmtDate(state.date), fmtTime(state.time)].filter(Boolean).join(' · ');
+    whenLine = '<strong style="color:#c8622a">📅 ' + when + '</strong><br>';
+  }
   document.getElementById('quote-note').innerHTML =
-    '<strong>' + bars + ' bartender' + (bars > 1 ? 's' : '') + ' &nbsp;·&nbsp; '
+    whenLine
+    + '<strong>' + bars + ' bartender' + (bars > 1 ? 's' : '') + ' &nbsp;·&nbsp; '
     + state.guests + ' guests &nbsp;·&nbsp; '
     + state.hours + ' hrs</strong><br>'
     + 'You supply the alcohol — FYRE brings everything else.'
     + tipNote + discNote;
+
+  updateDateHint();
 
   // Deposit / balance
   updateBookingBlock();
@@ -1010,6 +933,8 @@ function copyQuote() {
   var txt = 'FYRE Bartending — Event Quote\n'
           + '================================\n'
           + 'Package:  ' + d.label + '\n'
+          + (state.date ? 'Date:     ' + fmtDate(state.date) + '\n' : '')
+          + (state.time ? 'Time:     ' + fmtTime(state.time) + '\n' : '')
           + 'Guests:   ' + state.guests + '\n'
           + 'Hours:    ' + state.hours + '\n'
           + 'Staff:    ' + bars + ' bartender' + (bars > 1 ? 's' : '') + '\n'
@@ -1036,25 +961,40 @@ function emailQuote() {
   var bars   = Math.max(d.bars, barsNeeded(state.guests));
   var deposit = Math.round(currentTotal * DEPOSIT_RATE);
   var balance = currentTotal - deposit;
-  var subject = encodeURIComponent('FYRE Bartending Quote — ' + d.label + ' Package, ' + total);
+  var subject = encodeURIComponent('Event inquiry — ' + d.label + ' Package, ' + total);
   var body    = encodeURIComponent(
-    'Hi,\n\nHere is my FYRE Bartending event quote:\n\n'
+    'Hi FYRE team,\n\nI just built a quote on your site and I\'m ready to talk. Here are the details:\n\n'
     + 'Package: ' + d.label + '\n'
+    + (state.date ? 'Date: ' + fmtDate(state.date) + '\n' : '')
+    + (state.time ? 'Time: ' + fmtTime(state.time) + '\n' : '')
     + 'Guests: ' + state.guests + '\n'
     + 'Hours: ' + state.hours + '\n'
     + 'Bartenders: ' + bars + '\n'
     + 'Estimated Total: ' + total + '\n'
     + 'Deposit (50%, due to book): $' + deposit.toLocaleString() + '\n'
     + 'Balance (due day-of): $' + balance.toLocaleString() + '\n\n'
-    + 'I\'d love to confirm the details. Reach me at fyre-bar.com\n\n'
-    + '— FYRE Bartending | Petaluma, CA'
+    + 'Looking forward to hearing from you!\n\n'
+    + '— (please add your name & best contact number)'
   );
-  window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+  window.location.href = 'mailto:hello@fyre-bar.com?subject=' + subject + '&body=' + body;
 }
 
 // ── INIT ────────────────────────────────────────────────
 renderAddons();
 recalc();
 </script>
+
+<footer>
+  <div class="footer-logo">FY<span>R</span>E</div>
+  <p class="footer-tagline">Craft Bartending &bull; Sonoma County</p>
+  <ul class="footer-links">
+    <li><a href="/#about">About</a></li>
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#gallery">Gallery</a></li>
+    <li><a href="/book">Book</a></li>
+  </ul>
+  <div class="footer-copy">&copy; 2026 FYRE Bartending. Petaluma, CA. All rights reserved.</div>
+</footer>
+
 </body>
 </html>

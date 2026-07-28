@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FYRE Bartending – Build Your Quote</title>
+<meta name="description" content="Build a custom quote for premium mobile bartending in Sonoma County, Marin, and the San Francisco Bay Area. Choose a package, add extras, and book a free 15-minute consult.">
+<link rel="canonical" href="https://fyre-bar.com/book">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fyre-bar.com/book">
+<meta property="og:site_name" content="FYRE Bartending">
+<meta property="og:title" content="Build Your Quote — FYRE Bartending">
+<meta property="og:description" content="Build a custom quote for premium mobile bartending in Sonoma County, Marin, and the San Francisco Bay Area. Choose a package, add extras, and book a free 15-minute consult.">
+<meta property="og:image" content="https://fyre-bar.com/images/gallery-1.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Build Your Quote — FYRE Bartending">
+<meta name="twitter:description" content="Build a custom quote for premium mobile bartending in Sonoma County, Marin, and the San Francisco Bay Area. Choose a package, add extras, and book a free 15-minute consult.">
+<meta name="twitter:image" content="https://fyre-bar.com/images/gallery-1.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -368,6 +380,7 @@
   <ul class="nav-links">
     <li><a href="/#about">About</a></li>
     <li><a href="/#services">Services</a></li>
+    <li><a href="/cocktails">Cocktails</a></li>
     <li><a href="/#gallery">Gallery</a></li>
     <li><a href="/book">Book</a></li>
   </ul>
@@ -388,10 +401,10 @@
     <div class="discount-banner">
       <div class="discount-info">
         <div class="discount-title">🎉 August & September Offer — 10% Off</div>
-        <div class="discount-desc">Book an August or September event and take 10% off your total. Toggle the discount below to see your price. Our thank-you for helping build our Sonoma County portfolio.</div>
+        <div class="discount-desc">Book an August or September 2026 event and take 10% off your total. Enter your event date below and we'll apply it automatically. Our thank-you for helping build our Sonoma County portfolio.</div>
         <div class="slots-left" id="slots-left">Valid for Aug &amp; Sept 2026 events only</div>
       </div>
-      <button class="toggle" id="t-discount" onclick="toggleAddon('discount', this)"></button>
+      <button class="toggle" id="t-discount" onclick="focusEventDate()" aria-label="August/September offer status — applies automatically when your event date qualifies"></button>
     </div>
 
     <!-- 1. Package -->
@@ -487,11 +500,7 @@
         <div class="slider-hints"><span>2 hrs min</span><span>6 hrs</span><span>10 hrs</span></div>
       </div>
 
-      <div class="alert" id="bar-alert">
-        &#9888;&#65039; At <strong id="alert-guests">0</strong> guests you'll need
-        <strong id="alert-bars">2</strong> bartenders (1 per ~60 guests).
-        A second bartender is added automatically below.
-      </div>
+      <div class="alert" id="bar-alert"><span id="alert-text"></span></div>
     </div>
 
     <!-- 3. Add-Ons -->
@@ -512,7 +521,6 @@
       <span class="total-label">Total</span>
       <span class="total-amount" id="total-out">$500</span>
     </div>
-    <span class="benchmark" id="benchmark-badge"></span>
     <div class="quote-note" id="quote-note"></div>
     <button class="btn btn-primary" id="copy-btn" onclick="copyQuote()">📋 Copy quote summary</button>
     <button class="btn btn-secondary" onclick="emailQuote()">🔥 I'm ready! Email it to FYRE</button>
@@ -540,7 +548,7 @@
       <button class="btn btn-secondary" onclick="copyQuote()" style="margin-top:8px;">📋 Copy quote to bring to your consult</button>
     </div>
 
-    <div class="fine-print">Pricing benchmarked against Stir Crazy (Santa Rosa), Wild Craft (Sebastopol) &amp; Pour It On — active 2025 local competitors.</div>
+    <div class="fine-print">Every package includes an RBS-certified bartender, full bar kit, and a liability insurance COI. You supply the alcohol — FYRE brings everything else. Estimates are good for 30 days.</div>
   </div>
 
 </div><!-- /layout -->
@@ -583,8 +591,8 @@
 //    Use the "Customer chooses price" pricing model, $250 min
 //    on the deposit link.
 // ══════════════════════════════════════════════════════════
-var STRIPE_DEPOSIT_LINK = "https://buy.stripe.com/REPLACE_WITH_DEPOSIT_LINK";
-var STRIPE_BALANCE_LINK = "https://buy.stripe.com/REPLACE_WITH_BALANCE_LINK";
+// Deposit links are generated per-booking in Stripe and sent after the consult
+// call — there is deliberately no hardcoded payment link on this page.
 
 // ── STATE ──────────────────────────────────────────────
 var state = {
@@ -707,22 +715,39 @@ function setMocktail(n) {
 }
 
 // ── DATE / TIME ─────────────────────────────────────────
-function onEventDate(v) { state.date = v; updateDateHint(); recalc(); }
+function onEventDate(v) { state.date = v; applyDateDiscount(); updateDateHint(); recalc(); }
+
+// The Aug/Sept offer is earned by the event date — it is not a switch the
+// customer flips. This keeps the visual toggle in sync with the real state.
+function applyDateDiscount() {
+  var qualifies = dateQualifies(state.date);
+  if (state.addons.discount === qualifies) return;
+  state.addons.discount = qualifies;
+  var btn = document.getElementById('t-discount');
+  if (btn) { qualifies ? btn.classList.add('on') : btn.classList.remove('on'); }
+}
+
+// Clicking the offer pill sends them to the field that actually controls it.
+function focusEventDate() {
+  var el = document.getElementById('event-date');
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(function () { try { el.focus(); } catch (e) {} }, 350);
+}
 function onEventTime(v) { state.time = v; recalc(); }
 
 // Aug/Sept 2026 events qualify for the 10% offer
 function dateQualifies(v) {
   if (!v) return false;
+  var y = parseInt(v.substring(0, 4), 10);
   var m = parseInt(v.substring(5, 7), 10);
-  return m === 8 || m === 9;
+  return y === 2026 && (m === 8 || m === 9);
 }
 
 function updateDateHint() {
   var hint = document.getElementById('dt-hint');
   if (dateQualifies(state.date)) {
-    hint.textContent = state.addons.discount
-      ? '✓ Aug/Sept 10% offer applied.'
-      : '✓ This date qualifies for the 10% August/September offer — toggle it at the top.';
+    hint.textContent = '✓ This date qualifies — the 10% August/September offer has been applied.';
   } else {
     hint.textContent = '';
   }
@@ -772,8 +797,13 @@ function toggleAddon(key, btn) {
   recalc();
 }
 
+// Staffing ladder — must match the thresholds printed on the package cards:
+// 1 bartender through 64 guests, a 2nd at 65, a 3rd at 125, a 4th at 185.
+// If you change these numbers, update the .pkg-note copy on the cards too.
+var BAR_STEP_1 = 65;   // guest count at which the 2nd bartender is added
+var BAR_STEP_N = 60;   // every additional N guests adds one more
 function barsNeeded(guests) {
-  return Math.max(1, Math.ceil(guests / 60));
+  return 1 + Math.max(0, Math.ceil((guests - (BAR_STEP_1 - 1)) / BAR_STEP_N));
 }
 
 // ── RECALC ─────────────────────────────────────────────
@@ -785,12 +815,19 @@ function recalc() {
   var extraHours  = Math.max(0, state.hours - d.inclHours);
   var guestOver   = Math.max(0, state.guests - d.guestCap);
 
-  // Alert
+  // Alert — only fires when we're adding staff BEYOND what the package
+  // already includes, and names the right number of bartenders.
   var alertEl = document.getElementById('bar-alert');
-  if (bars > 1) {
+  if (extraBars > 0) {
     alertEl.classList.add('show');
-    document.getElementById('alert-guests').textContent = state.guests;
-    document.getElementById('alert-bars').textContent   = bars;
+    document.getElementById('alert-text').innerHTML =
+      '&#9888;&#65039; At <strong>' + state.guests + '</strong> guests we staff '
+      + '<strong>' + bars + '</strong> bartenders (a 2nd at ' + BAR_STEP_1
+      + ' guests, a 3rd at ' + (BAR_STEP_1 + BAR_STEP_N) + '). '
+      + (extraBars > 1
+          ? 'The ' + extraBars + ' additional bartenders are'
+          : 'The additional bartender is')
+      + ' added to your quote automatically below.';
   } else {
     alertEl.classList.remove('show');
   }
@@ -867,14 +904,6 @@ function recalc() {
 
   // Total
   document.getElementById('total-out').textContent = '$' + total.toLocaleString();
-
-  // Benchmark
-  var benchmarks = {
-    spark:   '📍 Stir Crazy "Baby Bar" — $500 for 50 guests / 2 hrs',
-    blaze:   '📍 Stir Crazy "Satellite Bar" — $895 for 75 guests / 4 hrs',
-    inferno: '📍 Wild Craft "Sequoia" — $1,100 for 75 guests / 4 hrs (no champagne service)'
-  };
-  document.getElementById('benchmark-badge').textContent = benchmarks[state.pkg];
 
   // Note
   var tipNote = state.addons.gratuity ? '' : ' Tip jar or add hosted gratuity for corporate/wedding events.';
@@ -990,6 +1019,7 @@ recalc();
   <ul class="footer-links">
     <li><a href="/#about">About</a></li>
     <li><a href="/#services">Services</a></li>
+    <li><a href="/cocktails">Cocktails</a></li>
     <li><a href="/#gallery">Gallery</a></li>
     <li><a href="/book">Book</a></li>
   </ul>

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>FYRE Bartending – Cocktail Curator</title>
+<meta name="description" content="Browse the FYRE Bartending cocktail menu — seasonal, farm-to-glass drinks built around Sonoma County ingredients. Filter by spirit and flavor, then build a signature list to bring to your consult.">
+<link rel="canonical" href="https://fyre-bar.com/cocktails">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fyre-bar.com/cocktails">
+<meta property="og:site_name" content="FYRE Bartending">
+<meta property="og:title" content="Cocktail Curator — FYRE Bartending">
+<meta property="og:description" content="Seasonal, farm-to-glass cocktails built around Sonoma County ingredients. Filter by spirit and flavor, then build your signature list.">
+<meta property="og:image" content="https://fyre-bar.com/images/gallery-1.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cocktail Curator — FYRE Bartending">
+<meta name="twitter:description" content="Seasonal, farm-to-glass cocktails built around Sonoma County ingredients.">
+<meta name="twitter:image" content="https://fyre-bar.com/images/gallery-1.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *:before, *:after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:     #0d0d0d;
+    --charcoal:  #1a1a1a;
+    --ember:     #c8622a;
+    --ember-lt:  #e07a42;
+    --cream:     #f5f0e8;
+    --cream-dk:  #e8e0d0;
+    --white:     #ffffff;
+    --text-dark: #1a1a1a;
+    --text-mid:  #555555;
+    --border:    #ded5c4;
+    --green:     #2a7a4b;
+    --gold-bg:   #fbf4e6;
+    --font-head: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Jost', Helvetica, Arial, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    font-weight: 300;
+    color: var(--text-dark);
+    background: var(--cream);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--ember); outline-offset: 2px; }
+
+  /* ── NAV ── */
+  .site-nav {
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+  }
+  .nav-logo {
+    font-family: var(--font-head);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.08em;
+  }
+  .nav-logo span { color: var(--ember); }
+  .nav-links { list-style: none; display: flex; gap: 32px; }
+  .nav-links a {
+    font-size: 0.74rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.82);
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--ember-lt); }
+  .nav-links a.current { color: var(--ember); }
+
+  /* ── PAGE INTRO ── */
+  .page-intro { background: var(--cream); text-align: center; padding: 56px 24px 8px; }
+  .page-eyebrow {
+    font-size: 0.68rem; font-weight: 400; letter-spacing: 0.35em;
+    text-transform: uppercase; color: var(--ember); margin-bottom: 14px;
+  }
+  .page-title {
+    font-family: var(--font-head); font-size: 3.4rem; font-weight: 300;
+    line-height: 1.1; color: var(--text-dark); margin-bottom: 14px;
+  }
+  .page-title em { font-style: italic; color: var(--ember); }
+  .page-sub {
+    font-size: 0.95rem; color: var(--text-mid); max-width: 620px;
+    margin: 0 auto; line-height: 1.7;
+  }
+
+  /* ── SHORTLIST BAR (the signature device) ── */
+  .shortlist {
+    position: sticky; top: 0; z-index: 40;
+    background: var(--black); color: var(--white);
+    padding: 12px 24px; margin-top: 40px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .sl-slots { display: flex; gap: 8px; }
+  .sl-slot {
+    width: 150px; padding: 7px 10px; font-size: 0.72rem;
+    border: 1px dashed rgba(255,255,255,0.28); color: rgba(255,255,255,0.35);
+    letter-spacing: 0.06em; text-align: center;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sl-slot.filled {
+    border: 1px solid var(--ember); border-style: solid;
+    color: var(--white); background: rgba(200,98,42,0.16);
+    cursor: pointer;
+  }
+  .sl-slot.filled:hover { background: rgba(200,98,42,0.3); }
+  .sl-label {
+    font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+  .sl-actions { display: flex; gap: 8px; }
+  .sl-btn {
+    font-family: var(--font-body); font-size: 0.68rem; font-weight: 400;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 8px 16px; border: 1px solid var(--ember);
+    background: var(--ember); color: var(--white); cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .sl-btn:hover { background: var(--ember-lt); border-color: var(--ember-lt); }
+  .sl-btn.ghost { background: transparent; color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.3); }
+  .sl-btn.ghost:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+  .sl-btn[disabled] { opacity: 0.35; cursor: not-allowed; }
+
+  /* ── LAYOUT ── */
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 72px; }
+
+  /* ── FILTERS ── */
+  .filters { margin-bottom: 32px; }
+  .filter-row { margin-bottom: 18px; }
+  .filter-name {
+    font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-mid); margin-bottom: 9px;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    font-family: var(--font-body); font-size: 0.76rem; font-weight: 300;
+    padding: 6px 15px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-mid);
+    cursor: pointer; transition: all 0.2s; border-radius: 0;
+  }
+  .chip:hover { border-color: var(--ember); color: var(--ember); }
+  .chip.on { background: var(--black); border-color: var(--black); color: var(--white); }
+  .search-input {
+    font-family: var(--font-body); font-size: 0.9rem; font-weight: 300;
+    width: 100%; max-width: 420px; padding: 11px 14px;
+    border: 1px solid var(--border); background: var(--white);
+    color: var(--text-dark);
+  }
+  .search-input::placeholder { color: #aaa; }
+  .results-bar {
+    display: flex; justify-content: space-between; align-items: baseline;
+    flex-wrap: wrap; gap: 10px;
+    border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 24px;
+  }
+  .results-count { font-size: 0.8rem; color: var(--text-mid); }
+  .link-btn {
+    font-family: var(--font-body); font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; background: none; border: none;
+    color: var(--ember); cursor: pointer; padding: 0;
+  }
+  .link-btn:hover { color: var(--ember-lt); text-decoration: underline; }
+
+  /* ── GRID ── */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(276px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--white); border: 1px solid var(--border);
+    padding: 22px 22px 20px; display: flex; flex-direction: column;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--ember); transform: translateY(-2px); }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .card-name { font-family: var(--font-head); font-size: 1.45rem; font-weight: 400; line-height: 1.15; }
+  .card-spirit {
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ember); white-space: nowrap; padding-top: 5px;
+  }
+  .card-meta {
+    font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-mid); margin: 9px 0 12px;
+  }
+  .card-blurb { font-size: 0.85rem; color: var(--text-mid); line-height: 1.65; flex: 1; }
+  .card-build {
+    font-size: 0.78rem; color: var(--text-dark); line-height: 1.6;
+    border-top: 1px solid var(--border); margin-top: 14px; padding-top: 12px;
+  }
+  .card-actions { display: flex; gap: 8px; margin-top: 14px; }
+  .card-btn {
+    font-family: var(--font-body); font-size: 0.68rem; font-weight: 400;
+    letter-spacing: 0.12em; text-transform: uppercase; flex: 1;
+    padding: 9px 10px; border: 1px solid var(--black); background: transparent;
+    color: var(--text-dark); cursor: pointer; transition: all 0.2s;
+  }
+  .card-btn:hover { background: var(--black); color: var(--white); }
+  .card-btn.added { background: var(--ember); border-color: var(--ember); color: var(--white); }
+  .card-btn.added:hover { background: var(--ember-lt); border-color: var(--ember-lt); }
+  .zp-tag {
+    display: inline-block; font-size: 0.6rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--green);
+    border: 1px solid var(--green); padding: 2px 7px; margin-left: 7px;
+  }
+  .empty {
+    grid-column: 1 / -1; text-align: center; padding: 56px 20px;
+    border: 1px dashed var(--border); color: var(--text-mid); font-size: 0.9rem;
+  }
+
+  /* ── QUIZ ── */
+  .quiz { background: var(--black); color: var(--white); padding: 64px 24px; }
+  .quiz-inner { max-width: 720px; margin: 0 auto; text-align: center; }
+  .quiz-eyebrow {
+    font-size: 0.66rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--ember); margin-bottom: 14px;
+  }
+  .quiz-title { font-family: var(--font-head); font-size: 2.5rem; font-weight: 300; margin-bottom: 12px; }
+  .quiz-title em { font-style: italic; color: var(--ember); }
+  .quiz-sub { color: rgba(255,255,255,0.6); font-size: 0.92rem; margin-bottom: 34px; }
+  .q-block { margin-bottom: 26px; }
+  .q-text {
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); margin-bottom: 12px;
+  }
+  .q-opts { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .q-opt {
+    font-family: var(--font-body); font-size: 0.8rem; font-weight: 300;
+    padding: 9px 18px; border: 1px solid rgba(255,255,255,0.22);
+    background: transparent; color: rgba(255,255,255,0.8); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .q-opt:hover { border-color: var(--ember); color: var(--white); }
+  .q-opt.on { background: var(--ember); border-color: var(--ember); color: var(--white); }
+  .quiz-out {
+    margin-top: 32px; border-top: 1px solid rgba(255,255,255,0.14); padding-top: 28px;
+    display: none;
+  }
+  .quiz-out.show { display: block; }
+  .quiz-out-label {
+    font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); margin-bottom: 16px;
+  }
+  .quiz-picks { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .quiz-pick {
+    border: 1px solid rgba(255,255,255,0.2); padding: 13px 18px; min-width: 190px;
+    text-align: left; background: rgba(255,255,255,0.03);
+  }
+  .quiz-pick-name { font-family: var(--font-head); font-size: 1.25rem; }
+  .quiz-pick-why { font-size: 0.72rem; color: rgba(255,255,255,0.5); line-height: 1.55; }
+
+  /* ── CTA ── */
+  .cta { background: var(--cream-dk); text-align: center; padding: 64px 24px; }
+  .cta-title { font-family: var(--font-head); font-size: 2.3rem; font-weight: 300; margin-bottom: 12px; }
+  .cta-title em { font-style: italic; color: var(--ember); }
+  .cta-sub { font-size: 0.92rem; color: var(--text-mid); max-width: 540px; margin: 0 auto 26px; }
+  .cta-btn {
+    display: inline-block; font-size: 0.74rem; letter-spacing: 0.18em;
+    text-transform: uppercase; padding: 15px 38px;
+    background: var(--ember); color: var(--white); transition: background 0.25s;
+  }
+  .cta-btn:hover { background: var(--ember-lt); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px);
+    background: var(--black); color: var(--white); padding: 13px 24px;
+    font-size: 0.8rem; letter-spacing: 0.05em; z-index: 90;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--black); padding: 48px 24px; text-align: center; }
+  .footer-logo { font-family: var(--font-head); font-size: 1.8rem; font-weight: 300; color: var(--white); letter-spacing: 0.1em; margin-bottom: 10px; }
+  .footer-logo span { color: var(--ember); }
+  .footer-tagline { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 28px; list-style: none; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); transition: color 0.25s; }
+  .footer-links a:hover { color: var(--ember); }
+  .footer-copy { font-size: 0.7rem; color: rgba(255,255,255,0.22); letter-spacing: 0.1em; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 760px) {
+    .site-nav { padding: 14px 20px; flex-direction: column; gap: 12px; }
+    .nav-links { gap: 20px; }
+    .page-title { font-size: 2.4rem; }
+    .shortlist { flex-direction: column; gap: 12px; }
+    .sl-slots { width: 100%; flex-direction: column; }
+    .sl-slot { width: 100%; }
+    .sl-actions { width: 100%; }
+    .sl-btn { flex: 1; }
+    .quiz-title { font-size: 1.9rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="/" class="nav-logo">FY<span>R</span>E</a>
+  <ul class="nav-links">
+    <li><a href="/#about">About</a></li>
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/classics">Classics</a></li>
+    <li><a href="/cocktails" class="current">Curator</a></li>
+    <li><a href="/#gallery">Gallery</a></li>
+    <li><a href="/book">Book</a></li>
+  </ul>
+</nav>
+
+<section class="page-intro">
+  <div class="page-eyebrow">Sonoma &bull; Marin &bull; San Francisco</div>
+  <h1 class="page-title">Cocktail <em>Curator</em></h1>
+  <p class="page-sub">
+    Everything here is built around what's actually growing and pressing in the North Bay.
+    Filter by spirit or flavor, pick the drinks you want pouring at your event, and bring
+    the list to your consult.
+  </p>
+</section>
+
+<!-- ══ SHORTLIST — pick your signature drinks ══ -->
+<div class="shortlist">
+  <span class="sl-label">Your signatures</span>
+  <div class="sl-slots" id="sl-slots"></div>
+  <div class="sl-actions">
+    <button class="sl-btn ghost" id="sl-clear" onclick="clearList()">Clear</button>
+    <button class="sl-btn" id="sl-copy" onclick="copyList()">Copy list</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ══ FILTERS ══ -->
+  <div class="filters">
+    <div class="filter-row">
+      <input type="search" class="search-input" id="q" placeholder="Search a drink or an ingredient…"
+             oninput="onSearch(this.value)" aria-label="Search cocktails">
+    </div>
+    <div class="filter-row">
+      <div class="filter-name">Base spirit</div>
+      <div class="chips" id="chips-spirit"></div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-name">Flavor profile</div>
+      <div class="chips" id="chips-profile"></div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-name">Season</div>
+      <div class="chips" id="chips-season"></div>
+    </div>
+  </div>
+
+  <div class="results-bar">
+    <span class="results-count" id="count"></span>
+    <button class="link-btn" onclick="resetFilters()">Reset filters</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- ══ FINDER QUIZ ══ -->
+<section class="quiz" id="finder">
+  <div class="quiz-inner">
+    <div class="quiz-eyebrow">Not sure where to start</div>
+    <h2 class="quiz-title">Find your <em>drink</em></h2>
+    <p class="quiz-sub">Three questions. We'll point you at three drinks worth tasting.</p>
+
+    <div class="q-block">
+      <div class="q-text">How do you like it to taste?</div>
+      <div class="q-opts" id="q-taste"></div>
+    </div>
+    <div class="q-block">
+      <div class="q-text">How strong?</div>
+      <div class="q-opts" id="q-strength"></div>
+    </div>
+    <div class="q-block">
+      <div class="q-text">When is the event?</div>
+      <div class="q-opts" id="q-season"></div>
+    </div>
+
+    <div class="quiz-out" id="quiz-out">
+      <div class="quiz-out-label">Start with these</div>
+      <div class="quiz-picks" id="quiz-picks"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta">
+  <h2 class="cta-title">Ready to put these on a <em>bar</em>?</h2>
+  <p class="cta-sub">
+    Blaze includes two signature cocktails, Inferno includes three. Build your quote,
+    then paste your list into the notes when you book your free consult.
+  </p>
+  <a href="/book" class="cta-btn">Build Your Quote</a>
+</section>
+
+<footer>
+  <div class="footer-logo">FY<span>R</span>E</div>
+  <p class="footer-tagline">Craft Bartending &bull; Sonoma County</p>
+  <ul class="footer-links">
+    <li><a href="/#about">About</a></li>
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/classics">Classics</a></li>
+    <li><a href="/cocktails">Curator</a></li>
+    <li><a href="/#gallery">Gallery</a></li>
+    <li><a href="/book">Book</a></li>
+  </ul>
+  <div class="footer-copy">&copy; 2026 FYRE Bartending. Petaluma, CA. All rights reserved.</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   THE MENU — this is the only block you edit to change the drinks.
+
+   Every field is used somewhere in the UI, so keep them all filled:
+     name     display name
+     spirit   base spirit; also drives the "Base spirit" filter chips
+     profile  one of: bright, spirit-forward, herbal, fruity, sparkling
+     season   one of: spring, summer, fall, winter, year-round
+     strength 1 = easy / low-proof, 2 = medium, 3 = spirit-forward
+     blurb    one or two sentences, guest-facing
+     build    the pour, written the way you'd read it off a spec card
+     garnish  what lands on top
+     glass    what it's served in
+     zeroProof  true for the non-alcoholic menu
+
+   PLACEHOLDER DATA — these are stand-ins so you can see the page work.
+   Swap in your real specs and the whole page rebuilds itself.
+════════════════════════════════════════════════════════════════════ */
+var COCKTAILS = [
+  { name:"Petaluma Gap",      spirit:"Gin",      profile:"bright",         season:"spring",    strength:2, zeroProof:false,
+    blurb:"Coastal-fog gin softened with Meyer lemon and a whisper of bay laurel. The one we pour when someone says they don't like gin.",
+    build:"2 oz gin · 3/4 oz Meyer lemon · 1/2 oz bay laurel syrup · 2 dashes saline", garnish:"Bay leaf", glass:"Coupe" },
+
+  { name:"Barn to Bar",       spirit:"Whiskey",  profile:"spirit-forward", season:"fall",      strength:3, zeroProof:false,
+    blurb:"Rye, black walnut, and a touch of local honey. Built for a cool evening on a gravel drive.",
+    build:"2 oz rye · 1/4 oz honey syrup · 2 dashes black walnut bitters", garnish:"Orange peel", glass:"Rocks" },
+
+  { name:"Two Rock Spritz",   spirit:"Aperitif", profile:"sparkling",      season:"summer",    strength:1, zeroProof:false,
+    blurb:"Sonoma sparkling wine, bitter orange, and grapefruit oil. Low-proof, endlessly drinkable, and it batches beautifully.",
+    build:"2 oz sparkling wine · 1 1/2 oz bitter aperitif · splash soda", garnish:"Grapefruit peel", glass:"Wine" },
+
+  { name:"Foggy Morning",     spirit:"Mezcal",   profile:"herbal",         season:"year-round",strength:3, zeroProof:false,
+    blurb:"Smoke, green chile, and lime. Small pour, big impression — a good closer for a spirit-forward crowd.",
+    build:"1 1/2 oz mezcal · 3/4 oz lime · 1/2 oz chile-agave · pinch salt", garnish:"Chile salt rim", glass:"Rocks" },
+
+  { name:"Estate Paloma",     spirit:"Tequila",  profile:"bright",         season:"summer",    strength:2, zeroProof:false,
+    blurb:"Fresh-pressed grapefruit instead of soda from a gun. The difference is not subtle.",
+    build:"2 oz blanco tequila · 2 oz fresh grapefruit · 1/2 oz lime · 1/4 oz agave · soda", garnish:"Grapefruit wheel", glass:"Collins" },
+
+  { name:"Russian River",     spirit:"Vodka",    profile:"fruity",         season:"summer",    strength:2, zeroProof:false,
+    blurb:"Stone fruit and lemon verbena. Reads as summer even when the fog rolls in at four.",
+    build:"2 oz vodka · 1 oz white peach · 3/4 oz lemon · 1/2 oz verbena syrup", garnish:"Peach slice", glass:"Coupe" },
+
+  { name:"Bodega Sour",       spirit:"Pisco",    profile:"bright",         season:"spring",    strength:2, zeroProof:false,
+    blurb:"A proper sour with egg white and Angostura. Slower to make, so we batch the base and shake to order.",
+    build:"2 oz pisco · 3/4 oz lime · 3/4 oz simple · 1 egg white", garnish:"Angostura", glass:"Coupe" },
+
+  { name:"Sebastopol Cider",  spirit:"Brandy",   profile:"fruity",         season:"fall",      strength:2, zeroProof:false,
+    blurb:"Apple brandy, pressed cider, and warm spice — served hot or cold. Our most-requested fall drink.",
+    build:"1 1/2 oz apple brandy · 3 oz pressed cider · 1/4 oz spiced syrup · lemon", garnish:"Apple fan, cinnamon", glass:"Mug" },
+
+  { name:"Fireside Manhattan",spirit:"Whiskey",  profile:"spirit-forward", season:"winter",    strength:3, zeroProof:false,
+    blurb:"Bourbon, sweet vermouth, and a barrel-aged bitter. Stirred, cold, and no apologies.",
+    build:"2 oz bourbon · 1 oz sweet vermouth · 2 dashes aromatic bitters", garnish:"Brandied cherry", glass:"Coupe" },
+
+  { name:"Garden Gimlet",     spirit:"Gin",      profile:"herbal",         season:"spring",    strength:2, zeroProof:false,
+    blurb:"Cucumber, dill, and lime. Tastes like a garden bed, in the best possible way.",
+    build:"2 oz gin · 3/4 oz lime · 1/2 oz dill syrup · 3 cucumber slices", garnish:"Cucumber ribbon", glass:"Coupe" },
+
+  { name:"Dry Creek Daiquiri",spirit:"Rum",      profile:"bright",         season:"summer",    strength:2, zeroProof:false,
+    blurb:"Three ingredients, done right. The drink we use to prove that simple isn't the same as plain.",
+    build:"2 oz white rum · 3/4 oz lime · 3/4 oz cane syrup", garnish:"Lime wheel", glass:"Coupe" },
+
+  { name:"Hearth & Smoke",    spirit:"Whiskey",  profile:"spirit-forward", season:"winter",    strength:3, zeroProof:false,
+    blurb:"Smoked maple and orange over a single large cube. Slow-sipping, and it holds up through a long toast.",
+    build:"2 oz bourbon · 1/4 oz smoked maple · 2 dashes orange bitters", garnish:"Orange peel", glass:"Rocks" },
+
+  { name:"Fog Line",          spirit:"Zero-proof",profile:"herbal",        season:"year-round",strength:1, zeroProof:true,
+    blurb:"Rosemary, grapefruit, and a saline finish. Built with the same technique as everything else on the menu.",
+    build:"1 oz rosemary cordial · 2 oz grapefruit · 1/2 oz lime · soda · 2 dashes saline", garnish:"Rosemary sprig", glass:"Collins" },
+
+  { name:"Orchard Shrub",     spirit:"Zero-proof",profile:"fruity",        season:"fall",      strength:1, zeroProof:true,
+    blurb:"House apple-cider vinegar shrub over crushed ice. Tart, complex, and nobody will ask what's missing.",
+    build:"1 1/2 oz apple shrub · 3 oz sparkling water · 1/4 oz honey", garnish:"Apple fan", glass:"Rocks" },
+
+  { name:"Golden Hour",       spirit:"Zero-proof",profile:"sparkling",     season:"summer",    strength:1, zeroProof:true,
+    blurb:"Non-alcoholic sparkling with white peach and verbena — our default welcome drink for mixed crowds.",
+    build:"3 oz NA sparkling · 1 oz white peach · 1/4 oz verbena syrup", garnish:"Lemon twist", glass:"Flute" }
+];
+
+var MAX_PICKS = 3;   // Inferno tops out at 3 signature cocktails
+
+/* ── STATE ─────────────────────────────────────────────── */
+var state = {
+  q: '',
+  spirit:  'all',
+  profile: 'all',
+  season:  'all',
+  picks:   [],
+  quiz: { taste: null, strength: null, season: null }
+};
+
+/* ── HELPERS ───────────────────────────────────────────── */
+function uniq(arr) { var o = []; arr.forEach(function (v) { if (o.indexOf(v) === -1) o.push(v); }); return o; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function titleCase(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+function byName(n) { for (var i = 0; i < COCKTAILS.length; i++) if (COCKTAILS[i].name === n) return COCKTAILS[i]; return null; }
+
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function () { t.classList.remove('show'); }, 2200);
+}
+
+/* ── FILTER CHIPS ──────────────────────────────────────── */
+var SPIRITS  = ['all'].concat(uniq(COCKTAILS.map(function (c) { return c.spirit; })));
+var PROFILES = ['all'].concat(uniq(COCKTAILS.map(function (c) { return c.profile; })));
+var SEASONS  = ['all', 'spring', 'summer', 'fall', 'winter', 'year-round'];
+
+function renderChips(hostId, values, key) {
+  document.getElementById(hostId).innerHTML = values.map(function (v) {
+    var label = v === 'all' ? 'All' : titleCase(v);
+    var on = state[key] === v ? ' on' : '';
+    return '<button class="chip' + on + '" onclick="setFilter(\'' + key + '\',\'' + esc(v) + '\')"'
+         + ' aria-pressed="' + (state[key] === v) + '">' + esc(label) + '</button>';
+  }).join('');
+}
+
+function setFilter(key, val) {
+  state[key] = val;
+  renderAllChips();
+  renderGrid();
+}
+
+function renderAllChips() {
+  renderChips('chips-spirit',  SPIRITS,  'spirit');
+  renderChips('chips-profile', PROFILES, 'profile');
+  renderChips('chips-season',  SEASONS,  'season');
+}
+
+function onSearch(v) { state.q = v.toLowerCase().trim(); renderGrid(); }
+
+function resetFilters() {
+  state.q = ''; state.spirit = 'all'; state.profile = 'all'; state.season = 'all';
+  document.getElementById('q').value = '';
+  renderAllChips();
+  renderGrid();
+}
+
+/* ── MATCHING ──────────────────────────────────────────── */
+function matches(c) {
+  if (state.spirit  !== 'all' && c.spirit  !== state.spirit)  return false;
+  if (state.profile !== 'all' && c.profile !== state.profile) return false;
+  if (state.season  !== 'all' && c.season  !== state.season && c.season !== 'year-round') return false;
+  if (state.q) {
+    var hay = (c.name + ' ' + c.spirit + ' ' + c.profile + ' ' + c.blurb + ' ' + c.build + ' ' + c.garnish).toLowerCase();
+    if (hay.indexOf(state.q) === -1) return false;
+  }
+  return true;
+}
+
+/* ── GRID ──────────────────────────────────────────────── */
+function renderGrid() {
+  var list = COCKTAILS.filter(matches);
+  var host = document.getElementById('grid');
+
+  document.getElementById('count').textContent =
+    list.length + (list.length === 1 ? ' drink' : ' drinks') + ' of ' + COCKTAILS.length;
+
+  if (!list.length) {
+    host.innerHTML = '<div class="empty">Nothing on the menu matches that combination yet. '
+                   + 'Clear a filter, or tell us at the consult — we build custom drinks for every event.</div>';
+    return;
+  }
+
+  host.innerHTML = list.map(function (c) {
+    var picked = state.picks.indexOf(c.name) !== -1;
+    return ''
+      + '<article class="card">'
+      +   '<div class="card-top">'
+      +     '<h3 class="card-name">' + esc(c.name)
+      +       (c.zeroProof ? '<span class="zp-tag">Zero proof</span>' : '')
+      +     '</h3>'
+      +     '<span class="card-spirit">' + esc(c.spirit) + '</span>'
+      +   '</div>'
+      +   '<div class="card-meta">' + esc(titleCase(c.profile)) + ' &nbsp;·&nbsp; ' + esc(titleCase(c.season)) + '</div>'
+      +   '<p class="card-blurb">' + esc(c.blurb) + '</p>'
+      +   '<div class="card-build">' + esc(c.build) + '<br><em>' + esc(c.garnish) + ' &nbsp;·&nbsp; ' + esc(c.glass) + '</em></div>'
+      +   '<div class="card-actions">'
+      +     '<button class="card-btn' + (picked ? ' added' : '') + '" onclick="togglePick(\'' + esc(c.name).replace(/'/g, "\\'") + '\')">'
+      +       (picked ? '&#10003; On your list' : 'Add to my event')
+      +     '</button>'
+      +   '</div>'
+      + '</article>';
+  }).join('');
+}
+
+/* ── SHORTLIST ─────────────────────────────────────────── */
+function togglePick(name) {
+  var i = state.picks.indexOf(name);
+  if (i !== -1) {
+    state.picks.splice(i, 1);
+  } else {
+    if (state.picks.length >= MAX_PICKS) {
+      toast('Three signature drinks is the max — that\'s our Inferno package.');
+      return;
+    }
+    state.picks.push(name);
+  }
+  renderShortlist();
+  renderGrid();
+}
+
+function clearList() {
+  if (!state.picks.length) return;
+  state.picks = [];
+  renderShortlist();
+  renderGrid();
+}
+
+function renderShortlist() {
+  var slots = '';
+  for (var i = 0; i < MAX_PICKS; i++) {
+    var n = state.picks[i];
+    slots += n
+      ? '<button class="sl-slot filled" onclick="togglePick(\'' + esc(n).replace(/'/g, "\\'") + '\')"'
+        + ' title="Remove ' + esc(n) + '">' + esc(n) + '</button>'
+      : '<div class="sl-slot">Slot ' + (i + 1) + '</div>';
+  }
+  document.getElementById('sl-slots').innerHTML = slots;
+  document.getElementById('sl-copy').disabled  = state.picks.length === 0;
+  document.getElementById('sl-clear').disabled = state.picks.length === 0;
+}
+
+function copyList() {
+  if (!state.picks.length) return;
+  var txt = 'FYRE — signature cocktail picks\n\n'
+          + state.picks.map(function (n, i) {
+              var c = byName(n);
+              return (i + 1) + '. ' + c.name + ' (' + c.spirit + ', ' + c.profile + ')\n'
+                   + '   ' + c.build + '\n'
+                   + '   Garnish: ' + c.garnish + ' · Glass: ' + c.glass;
+            }).join('\n\n')
+          + '\n\nPaste this into the notes when you book your consult: https://fyre-bar.com/book';
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(
+      function () { toast('Copied — paste it into your consult notes.'); },
+      function () { fallbackCopy(txt); }
+    );
+  } else {
+    fallbackCopy(txt);
+  }
+}
+
+function fallbackCopy(txt) {
+  var ta = document.createElement('textarea');
+  ta.value = txt;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); toast('Copied — paste it into your consult notes.'); }
+  catch (e) { toast('Copy failed — select the drinks manually.'); }
+  document.body.removeChild(ta);
+}
+
+/* ── FINDER QUIZ ───────────────────────────────────────── */
+var QUIZ = {
+  taste: [
+    { label: 'Bright & citrusy', val: 'bright' },
+    { label: 'Spirit-forward',   val: 'spirit-forward' },
+    { label: 'Herbal & savory',  val: 'herbal' },
+    { label: 'Fruity',           val: 'fruity' },
+    { label: 'Bubbly',           val: 'sparkling' }
+  ],
+  strength: [
+    { label: 'Zero proof',   val: 0 },
+    { label: 'Easy-drinking',val: 1 },
+    { label: 'Medium',       val: 2 },
+    { label: 'Strong',       val: 3 }
+  ],
+  season: [
+    { label: 'Spring', val: 'spring' }, { label: 'Summer', val: 'summer' },
+    { label: 'Fall',   val: 'fall'   }, { label: 'Winter', val: 'winter' }
+  ]
+};
+
+function renderQuiz() {
+  ['taste', 'strength', 'season'].forEach(function (k) {
+    document.getElementById('q-' + k).innerHTML = QUIZ[k].map(function (o) {
+      var on = state.quiz[k] === o.val ? ' on' : '';
+      var v  = typeof o.val === 'number' ? o.val : "'" + o.val + "'";
+      return '<button class="q-opt' + on + '" onclick="setQuiz(\'' + k + '\',' + v + ')"'
+           + ' aria-pressed="' + (state.quiz[k] === o.val) + '">' + esc(o.label) + '</button>';
+    }).join('');
+  });
+}
+
+function setQuiz(k, v) {
+  state.quiz[k] = state.quiz[k] === v ? null : v;
+  renderQuiz();
+  scoreQuiz();
+}
+
+// Weighted scoring: taste is the strongest signal, then strength, then season.
+// Every answer is optional — partial answers still return a sensible three.
+function scoreQuiz() {
+  var q = state.quiz;
+  if (q.taste === null && q.strength === null && q.season === null) {
+    document.getElementById('quiz-out').classList.remove('show');
+    return;
+  }
+
+  var scored = COCKTAILS.map(function (c) {
+    var s = 0, why = [];
+    if (q.taste !== null && c.profile === q.taste) { s += 3; why.push(titleCase(c.profile)); }
+    if (q.strength !== null) {
+      if (q.strength === 0) {
+        if (c.zeroProof) { s += 3; why.push('zero proof'); }
+        else { s -= 4; }
+      } else if (c.zeroProof) {
+        s -= 2;
+      } else {
+        var gap = Math.abs(c.strength - q.strength);
+        s += (gap === 0 ? 2 : gap === 1 ? 1 : 0);
+        if (gap === 0) why.push(['', 'easy-drinking', 'medium', 'strong'][c.strength]);
+      }
+    }
+    if (q.season !== null) {
+      if (c.season === q.season)      { s += 2; why.push('in season'); }
+      else if (c.season === 'year-round') { s += 1; }
+    }
+    return { c: c, s: s, why: why };
+  });
+
+  scored.sort(function (a, b) { return b.s - a.s; });
+  var top = scored.filter(function (r) { return r.s > 0; }).slice(0, 3);
+
+  var out = document.getElementById('quiz-out');
+  if (!top.length) {
+    out.classList.remove('show');
+    return;
+  }
+  out.classList.add('show');
+  document.getElementById('quiz-picks').innerHTML = top.map(function (r) {
+    return '<div class="quiz-pick">'
+         +   '<div class="quiz-pick-name">' + esc(r.c.name) + '</div>'
+         +   '<div class="quiz-pick-why">' + esc(r.why.length ? r.why.join(' · ') : r.c.spirit) + '</div>'
+         + '</div>';
+  }).join('');
+}
+
+/* ── INIT ──────────────────────────────────────────────── */
+renderAllChips();
+renderGrid();
+renderShortlist();
+renderQuiz();
+</script>
+
+</body>
+</html>

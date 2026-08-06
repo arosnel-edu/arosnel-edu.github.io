@@ -107,6 +107,13 @@
               line-height: 1; min-width: 42px; }
   .pick-body { flex: 1; }
   .pick-name { font-family: var(--font-head); font-size: 1.3rem; line-height: 1.2; }
+  .pick-variant { display: flex; gap: 5px; margin: 4px 0 2px; }
+  .variant-btn { font-family: var(--font-body); font-size: 0.62rem; letter-spacing: 0.08em;
+                 text-transform: uppercase; padding: 3px 9px; cursor: pointer;
+                 border: 1px solid var(--border); background: transparent; color: var(--text-mid);
+                 transition: all 0.18s; }
+  .variant-btn:hover { border-color: var(--ember); color: var(--ember); }
+  .variant-btn.on { background: var(--ember); border-color: var(--ember); color: #fff; }
   .pick-spec { font-size: 0.74rem; color: var(--text-mid); line-height: 1.5; margin-top: 3px; }
   .pick-why { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
               color: var(--ember); margin-top: 6px; }
@@ -246,6 +253,12 @@
     </div>
     <div class="size-row">
       <div class="size-field">
+        <div class="size-label">Cocktails on the menu</div>
+        <div class="size-val" id="m-val">5 drinks</div>
+        <input type="range" id="m-slider" min="2" max="5" step="1" value="5"
+               oninput="setMenuSize(this.value)" aria-label="Number of cocktails on the menu">
+      </div>
+      <div class="size-field">
         <div class="size-label">Guests</div>
         <div class="size-val" id="g-val">75</div>
         <input type="range" id="g-slider" min="10" max="250" step="5" value="75"
@@ -384,8 +397,12 @@ var DRINKS = [
     ing:[["White rum",2,"spirit"],["Coconut cream",1.5,"dairy"],["Pineapple juice",2,"juice"],["Pineapple wedge",1,"garnish"]] },
 
   { n:"Dry Martini", diag:1, s:"Gin", ax:[1,1,10,2,0], glass:"Coupe",
-    d:"Gin and dry vermouth, stirred cold. The dry end of the scale.",
-    ing:[["Gin",2.5,"spirit"],["Dry vermouth",0.5,"wine"],["Lemon twist or olive",1,"garnish"]] },
+    d:"Gin or vodka, dry vermouth, stirred cold. The dry end of the scale, your call on the base.",
+    variantDefault:"gin",
+    variants:{
+      gin:  [["Gin",2.5,"spirit"],["Dry vermouth",0.5,"wine"],["Lemon twist or olive",1,"garnish"]],
+      vodka:[["Vodka",2.5,"spirit"],["Dry vermouth",0.5,"wine"],["Lemon twist or olive",1,"garnish"]]
+    } },
 
   { n:"Cosmopolitan", diag:1, s:"Vodka", ax:[5,7,5,0,0], glass:"Coupe",
     d:"Citrus vodka, lime, cranberry. Tart and fruit-driven.",
@@ -428,25 +445,25 @@ var DRINKS = [
     d:"Gin, lemon, sugar, soda. The original tall refresher.",
     ing:[["Gin",2,"spirit"],["Lemon juice",0.75,"lemon"],["Simple syrup",0.75,"syrup"],["Soda water",3,"mixer"],["Lemon wheel",1,"garnish"]] },
 
-  { n:"Last Word", diag:0, s:"Gin", ax:[5,6,7,5,0], glass:"Coupe",
-    d:"Equal parts gin, Chartreuse, maraschino, lime. Herbal and complex.",
-    ing:[["Gin",0.75,"spirit"],["Green Chartreuse",0.75,"liqueur"],["Maraschino liqueur",0.75,"liqueur"],["Lime juice",0.75,"lime"]] },
+  { n:"Corpse Reviver #2", diag:0, s:"Gin", ax:[4,7,6,2,0], glass:"Coupe",
+    d:"Gin, Lillet, orange liqueur, lemon, an absinthe rinse. Bright and a little dangerous.",
+    ing:[["Gin",0.75,"spirit"],["Lillet Blanc",0.75,"wine"],["Triple sec",0.75,"liqueur"],["Lemon juice",0.75,"lemon"],["Absinthe",0.1,"spirit"]] },
 
   { n:"Paper Plane", diag:0, s:"Whiskey", ax:[4,6,6,7,0], glass:"Coupe",
     d:"Bourbon, Aperol, amaro, lemon. Bitter and citrus in balance.",
     ing:[["Bourbon",0.75,"spirit"],["Aperol",0.75,"liqueur"],["Amaro Nonino",0.75,"liqueur"],["Lemon juice",0.75,"lemon"]] },
 
-  { n:"Mint Julep", diag:0, s:"Whiskey", ax:[5,0,8,0,0], glass:"Julep cup",
-    d:"Bourbon, sugar, mint, crushed ice. Strong but drinks cold and slow.",
-    ing:[["Bourbon",2.5,"spirit"],["Simple syrup",0.5,"syrup"],["Mint sprig",1,"garnish"]] },
+  { n:"Whiskey Smash", diag:0, s:"Whiskey", ax:[4,5,7,0,0], glass:"Rocks",
+    d:"Bourbon, muddled lemon, mint, sugar. A julep and a whiskey sour meeting in the middle.",
+    ing:[["Bourbon",2,"spirit"],["Lemon juice",0.75,"lemon"],["Simple syrup",0.75,"syrup"],["Mint sprig",1,"garnish"]] },
 
-  { n:"Amaretto Sour", diag:0, s:"Amaretto", ax:[8,6,4,1,0], glass:"Rocks",
-    d:"Amaretto, a little bourbon, lemon. Sweet, nutty, very approachable.",
-    ing:[["Amaretto",1.5,"liqueur"],["Bourbon",0.75,"spirit"],["Lemon juice",0.75,"lemon"],["Simple syrup",0.25,"syrup"]] },
+  { n:"Lemon Drop", diag:0, s:"Vodka", ax:[7,7,4,0,0], glass:"Coupe",
+    d:"Vodka, lemon, sugar rim. Sweet-tart and easy to like.",
+    ing:[["Vodka",2,"spirit"],["Triple sec",0.5,"liqueur"],["Lemon juice",0.75,"lemon"],["Simple syrup",0.5,"syrup"],["Sugar rim",1,"garnish"]] },
 
-  { n:"Bloody Mary", diag:0, s:"Vodka", ax:[2,3,4,2,0], glass:"Collins",
-    d:"Savory rather than sweet. The brunch and daytime answer.",
-    ing:[["Vodka",1.5,"spirit"],["Tomato juice",4,"juice"],["Lemon juice",0.5,"lemon"],["Celery stalk",1,"garnish"]] },
+  { n:"Kamikaze", diag:0, s:"Vodka", ax:[4,7,6,0,0], glass:"Rocks",
+    d:"Vodka, orange liqueur, lime. A shot's worth of citrus and spirit.",
+    ing:[["Vodka",1.5,"spirit"],["Triple sec",1,"liqueur"],["Lime juice",1,"lime"]] },
 
   { n:"No-Proof Mule", diag:0, s:"Zero-proof", ax:[5,6,0,0,0], glass:"Mug", zp:1,
     d:"Ginger beer, lime, bitters. The zero-proof drink people actually finish.",
@@ -454,7 +471,11 @@ var DRINKS = [
 
   { n:"Garden Spritz", diag:0, s:"Zero-proof", ax:[4,6,0,3,0], glass:"Wine", zp:1,
     d:"Non-alcoholic aperitif, soda, grapefruit. Bitter enough to read as a real drink.",
-    ing:[["NA bitter aperitif",2,"liqueur"],["Soda water",3,"mixer"],["Grapefruit juice",1,"grapefruit"],["Orange slice",1,"garnish"]] }
+    ing:[["NA bitter aperitif",2,"liqueur"],["Soda water",3,"mixer"],["Grapefruit juice",1,"grapefruit"],["Orange slice",1,"garnish"]] },
+
+  { n:"Virgin Mojito", diag:0, s:"Zero-proof", ax:[5,6,0,0,0], glass:"Collins", zp:1,
+    d:"Muddled mint, lime, soda. The mocktail people actually order twice.",
+    ing:[["Lime juice",0.75,"lime"],["Simple syrup",0.75,"syrup"],["Soda water",4,"mixer"],["Mint sprig",1,"garnish"]] }
 ];
 
 /* ── PLANNING CONSTANTS — edit these to match how you actually plan ── */
@@ -465,7 +486,7 @@ var FIRST_HOUR    = 2;       // drinks per drinker in hour one
 var LATER_HOURS   = 1;       // drinks per drinker each hour after
 var JUICE_YIELD   = { lime: 1.0, lemon: 1.5, orange: 2.5, grapefruit: 5.0 };
 var GARNISH_PER_FRUIT = 8;   // wedges or wheels off one piece of fruit
-var MAX_MENU      = 8;
+var MAX_MENU      = 5;
 
 var AXES = [
   { key:0, left:"Dry",        right:"Sweet" },
@@ -479,13 +500,25 @@ var state = {
   ratings: {},            // name -> 'love' | 'ok' | 'no'
   menu: [],               // selected drink names
   guests: 75, hours: 4, drinkPct: 85,
-  touchedMenu: false      // once they edit the menu, stop auto-filling it
+  menuSize: 5,            // how many different cocktails they want pouring
+  touchedMenu: false,     // once they edit the menu, stop auto-filling it
+  variant: {}             // drink name -> chosen spirit, for drinks with variants
 };
 
 /* ── UTIL ─────────────────────────────────────────────── */
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function q(s){ return "'" + String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'") + "'"; }
 function find(n){ for(var i=0;i<DRINKS.length;i++) if(DRINKS[i].n===n) return DRINKS[i]; return null; }
+
+// Some drinks (currently just Dry Martini) offer more than one base spirit.
+// Every place that reads a drink's recipe goes through here instead of
+// touching d.ing directly, so the shopping list always reflects whichever
+// spirit is actually selected.
+function ingredientsFor(d){
+  if(!d.variants) return d.ing;
+  var choice = state.variant[d.n] || d.variantDefault;
+  return d.variants[choice];
+}
 function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('show');
   clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show');},2200); }
 
@@ -599,26 +632,41 @@ function renderPicks(){
   var rows = ranked();
   var p = profile();
 
-  // Before they've touched anything, pre-fill a sensible five so the
-  // itemized list downstream is never empty.
+  // Until they hand-pick, fill to whatever menu size they asked for in step 3.
+  // One slot is always held for a zero-proof option — every event has someone
+  // not drinking, and they should get something better than soda.
   if(p && !state.touchedMenu){
-    state.menu = rows.filter(function(r){ return !r.d.zp; }).slice(0,4).map(function(r){ return r.d.n; });
+    state.menu = rows.filter(function(r){ return !r.d.zp; })
+                     .slice(0, Math.max(1, state.menuSize - 1))
+                     .map(function(r){ return r.d.n; });
     var zp = rows.filter(function(r){ return r.d.zp; })[0];
-    if(zp) state.menu.push(zp.d.n);
+    if(zp && state.menu.length < state.menuSize) state.menu.push(zp.d.n);
   }
 
   document.getElementById('menu-note').textContent = p
-    ? state.menu.length + ' of ' + MAX_MENU + ' selected · ranked by fit'
+    ? state.menu.length + ' of ' + state.menuSize + ' chosen · ranked by fit'
     : 'Rate a few drinks above to rank these by fit.';
 
   document.getElementById('pick-list').innerHTML = rows.map(function(r){
     var on = state.menu.indexOf(r.d.n)!==-1;
-    var spec = r.d.ing.filter(function(i){return i[2]!=='bitters'&&i[2]!=='garnish';})
+    var spec = ingredientsFor(r.d).filter(function(i){return i[2]!=='bitters'&&i[2]!=='garnish';})
                       .map(function(i){return i[0];}).join(' · ');
+    var variantRow = '';
+    if(r.d.variants){
+      var picked = state.variant[r.d.n] || r.d.variantDefault;
+      variantRow = '<div class="pick-variant">'
+        + Object.keys(r.d.variants).map(function(v){
+            return '<button class="variant-btn'+(v===picked?' on':'')+'" '
+                 + 'onclick="setVariant('+q(r.d.n)+','+q(v)+')" aria-pressed="'+(v===picked)+'">'
+                 + esc(v.charAt(0).toUpperCase()+v.slice(1)) + '</button>';
+          }).join('')
+        + '</div>';
+    }
     return '<div class="pick'+(on?' on':'')+'">'
          +   '<div class="pick-fit">'+(r.fit===null?'—':r.fit)+'</div>'
          +   '<div class="pick-body">'
          +     '<div class="pick-name">'+esc(r.d.n)+'</div>'
+         +     variantRow
          +     '<div class="pick-spec">'+esc(spec)+'</div>'
          +     (r.fit===null?'':'<div class="pick-why">'+esc(r.why)+'</div>')
          +   '</div>'
@@ -628,14 +676,60 @@ function renderPicks(){
   }).join('');
 }
 
+// Switching Gin <-> Vodka on a variant drink changes what actually gets
+// bought, so it has to refresh the shopping list, not just the label.
+function setVariant(name, choice){
+  state.variant[name] = choice;
+  renderPicks(); renderSheet();
+}
+
 function toggleMenu(n){
   state.touchedMenu = true;
   var i = state.menu.indexOf(n);
   if(i!==-1) state.menu.splice(i,1);
   else {
-    if(state.menu.length>=MAX_MENU){ toast('Eight drinks is plenty — pull one first.'); return; }
+    if(state.menu.length>=MAX_MENU){ toast('Five drinks is plenty — pull one first.'); return; }
     state.menu.push(n);
   }
+  // Hand-picking is the source of truth: pull the step 3 slider to match
+  // rather than letting the two numbers contradict each other.
+  state.menuSize = Math.max(2, state.menu.length);
+  syncMenuSlider();
+  renderPicks(); renderSheet();
+}
+
+function syncMenuSlider(){
+  var sl = document.getElementById('m-slider');
+  if(sl) sl.value = state.menuSize;
+  var lb = document.getElementById('m-val');
+  if(lb) lb.textContent = state.menuSize + ' drink' + (state.menuSize===1?'':'s');
+}
+
+// Moving the slider after they've hand-picked: trim the weakest fits, or
+// top up from the best-fitting drinks not already chosen.
+function fitMenuToSize(){
+  var rows = ranked();
+  function fitOf(n){
+    for(var i=0;i<rows.length;i++) if(rows[i].d.n===n) return rows[i].fit===null?0:rows[i].fit;
+    return 0;
+  }
+  while(state.menu.length > state.menuSize){
+    var worst=state.menu[0], worstFit=Infinity;
+    state.menu.forEach(function(n){
+      var f=fitOf(n);
+      if(f<=worstFit){ worstFit=f; worst=n; }
+    });
+    state.menu.splice(state.menu.indexOf(worst),1);
+  }
+  for(var i=0;i<rows.length && state.menu.length<state.menuSize;i++){
+    if(state.menu.indexOf(rows[i].d.n)===-1) state.menu.push(rows[i].d.n);
+  }
+}
+
+function setMenuSize(v){
+  state.menuSize = parseInt(v,10);
+  syncMenuSlider();
+  if(state.touchedMenu) fitMenuToSize();
   renderPicks(); renderSheet();
 }
 
@@ -669,7 +763,7 @@ function buildList(){
   state.menu.forEach(function(name){
     var d = find(name); if(!d) return;
     var servings = per[name];
-    d.ing.forEach(function(i){
+    ingredientsFor(d).forEach(function(i){
       var key = i[0]+'|'+i[2];
       acc[key] = (acc[key]||0) + i[1]*servings;
     });
@@ -728,6 +822,28 @@ function buildList(){
   return { groups: groups, per: per };
 }
 
+// Total 750ml bottles across spirits, liqueurs, and wine. Surfaced in step 3
+// because it is the number that actually moves the host's spend.
+function bottleCount(){
+  if(!state.menu.length) return 0;
+  var g = buildList().groups;
+  return ['spirit','liqueur','wine'].reduce(function(sum,k){
+    return sum + g[k].reduce(function(a,r){ return a + parseInt(r.qty,10); }, 0);
+  }, 0);
+}
+
+// A wider menu splits the same volume across more recipes, which means more
+// bottles opened and more left over. Worth saying out loud before they buy.
+function varietyNote(){
+  if(state.menu.length === 5)
+    return ' <br><br>At 5 cocktails you are near the practical limit for one bartender working '
+         + 'a rail smoothly — this is where variety and bottle count balance out.';
+  if(state.menu.length <= 2)
+    return ' <br><br>Two cocktails batches beautifully and pours fast, though you may want '
+         + 'beer and wine alongside it so there is something for everyone.';
+  return '';
+}
+
 var SECTIONS = [
   ['spirit','Spirits'], ['liqueur','Liqueurs & aperitifs'], ['wine','Wine & vermouth'],
   ['juice','Juice & fresh produce'], ['syrup','Syrups'], ['mixer','Mixers & soda'],
@@ -740,7 +856,10 @@ function renderSheet(){
     ? 'About <strong>'+totalDrinks()+' drinks</strong> total — '
       + Math.round(state.guests*state.drinkPct/100)+' drinkers, '
       + FIRST_HOUR+' in the first hour and '+LATER_HOURS+' per hour after. '
-      + 'Split across '+state.menu.length+' drink'+(state.menu.length===1?'':'s')+'.'
+      + 'Split across '+state.menu.length+' cocktail'+(state.menu.length===1?'':'s')
+      + ', about <strong>'+Math.ceil(totalDrinks()/state.menu.length)+' servings each</strong>. '
+      + 'Your bottle count comes to <strong>'+bottleCount()+'</strong>.'
+      + varietyNote()
     : 'Pick at least one drink above to size the order.';
 
   document.getElementById('copy-btn').disabled = !state.menu.length;
@@ -787,7 +906,7 @@ function copySheet(){
   state.menu.forEach(function(n){
     var d=find(n);
     L.push('  '+d.n+' ('+d.glass+') — '+built.per[n]+' servings');
-    L.push('    '+d.ing.map(function(i){ return i[1]? i[1]+' oz '+i[0] : i[0]; }).join(', '));
+    L.push('    '+ingredientsFor(d).map(function(i){ return i[1]? i[1]+' oz '+i[0] : i[0]; }).join(', '));
   });
   L.push('');
   L.push('SHOPPING LIST');
@@ -819,7 +938,8 @@ function fallbackCopy(txt){
 }
 
 function resetAll(){
-  state.ratings={}; state.menu=[]; state.touchedMenu=false;
+  state.ratings={}; state.menu=[]; state.touchedMenu=false; state.menuSize=5;
+  syncMenuSlider();
   renderRatings(); renderProfile(); renderPicks(); renderSheet();
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -827,6 +947,7 @@ function resetAll(){
 /* ── INIT ─────────────────────────────────────────────── */
 renderRatings();
 renderProfile();
+syncMenuSlider();
 renderPicks();
 setSize('guests', 75);
 </script>

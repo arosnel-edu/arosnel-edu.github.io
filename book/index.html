@@ -276,18 +276,6 @@
     color: var(--green); background: #edf5ef; padding: 5px 9px; white-space: nowrap;
   }
 
-  /* ── DISCOUNT BANNER ── */
-  .discount-banner {
-    background: rgba(200,98,42,0.07); border: 1px solid rgba(200,98,42,0.3);
-    padding: 16px 18px; display: flex; align-items: flex-start; justify-content: space-between;
-    gap: 16px; margin-bottom: 36px;
-  }
-  .discount-info .discount-title {
-    font-family: var(--font-head); font-size: 1.25rem; font-weight: 400; color: var(--ember); margin-bottom: 4px;
-  }
-  .discount-info .discount-desc { font-size: 0.82rem; color: var(--text-mid); line-height: 1.5; }
-  .slots-left { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ember); margin-top: 6px; }
-
   /* ── QUOTE PANEL ── */
   .quote-title {
     font-size: 0.68rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.28em;
@@ -297,7 +285,6 @@
   .q-label { color: var(--text-mid); flex: 1; line-height: 1.4; }
   .q-amount { font-weight: 500; color: var(--text-dark); white-space: nowrap; }
   .divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
-  .discount-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85rem; color: var(--green); font-weight: 500; }
   .total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
   .total-label { font-size: 0.95rem; font-weight: 500; letter-spacing: 0.03em; text-transform: uppercase; }
   .total-amount { font-family: var(--font-head); font-size: 2.8rem; font-weight: 300; color: var(--ember); }
@@ -397,16 +384,6 @@
 
   <!-- ══ LEFT COLUMN ══ -->
   <div class="left">
-
-    <!-- Founding Discount Banner -->
-    <div class="discount-banner">
-      <div class="discount-info">
-        <div class="discount-title">🎉 August & September Offer — 10% Off</div>
-        <div class="discount-desc">Book an August or September 2026 event and take 10% off your total. Enter your event date below and we'll apply it automatically. Our thank-you for helping build our Sonoma County portfolio.</div>
-        <div class="slots-left" id="slots-left">Valid for Aug &amp; Sept 2026 events only</div>
-      </div>
-      <button class="toggle" id="t-discount" onclick="focusEventDate()" aria-label="August/September offer status — applies automatically when your event date qualifies"></button>
-    </div>
 
     <!-- 1. Package -->
     <div class="section">
@@ -517,7 +494,6 @@
     <div class="quote-title">Your estimate</div>
     <div id="quote-lines"></div>
     <hr class="divider">
-    <div id="discount-row"></div>
     <div class="total-row">
       <span class="total-label">Total</span>
       <span class="total-amount" id="total-out">$500</span>
@@ -604,7 +580,6 @@ var state = {
   time: '',             // HH:MM (24h) from the time picker
   mocktail: 0,          // 0, 1, or 2 signature mocktails
   addons: {
-    discount:  false,
     cocktail:  false,
     glassware: false,
     welcome:   false,
@@ -653,7 +628,6 @@ var PKG = {
 
 var EXTRA_HOUR_RATE   = 100;
 var PER_GUEST_OVERAGE = 5;
-var DISCOUNT_RATE     = 0.10;
 var DEPOSIT_RATE      = 0.50;
 
 var currentTotal = 500; // kept in sync by recalc()
@@ -716,43 +690,9 @@ function setMocktail(n) {
 }
 
 // ── DATE / TIME ─────────────────────────────────────────
-function onEventDate(v) { state.date = v; applyDateDiscount(); updateDateHint(); recalc(); }
+function onEventDate(v) { state.date = v; recalc(); }
 
-// The Aug/Sept offer is earned by the event date — it is not a switch the
-// customer flips. This keeps the visual toggle in sync with the real state.
-function applyDateDiscount() {
-  var qualifies = dateQualifies(state.date);
-  if (state.addons.discount === qualifies) return;
-  state.addons.discount = qualifies;
-  var btn = document.getElementById('t-discount');
-  if (btn) { qualifies ? btn.classList.add('on') : btn.classList.remove('on'); }
-}
-
-// Clicking the offer pill sends them to the field that actually controls it.
-function focusEventDate() {
-  var el = document.getElementById('event-date');
-  if (!el) return;
-  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  setTimeout(function () { try { el.focus(); } catch (e) {} }, 350);
-}
 function onEventTime(v) { state.time = v; recalc(); }
-
-// Aug/Sept 2026 events qualify for the 10% offer
-function dateQualifies(v) {
-  if (!v) return false;
-  var y = parseInt(v.substring(0, 4), 10);
-  var m = parseInt(v.substring(5, 7), 10);
-  return y === 2026 && (m === 8 || m === 9);
-}
-
-function updateDateHint() {
-  var hint = document.getElementById('dt-hint');
-  if (dateQualifies(state.date)) {
-    hint.textContent = '✓ This date qualifies — the 10% August/September offer has been applied.';
-  } else {
-    hint.textContent = '';
-  }
-}
 
 function fmtDate(v) {
   if (!v) return '';
@@ -852,9 +792,7 @@ function recalc() {
   var subtotal = d.base + extraBarCost + extraHourCost + guestCost + addonCost;
 
   var gratuityCost = state.addons.gratuity ? Math.round(subtotal * 0.20) : 0;
-  var preDiscount  = subtotal + gratuityCost;
-  var discountAmt  = state.addons.discount ? Math.round(preDiscount * DISCOUNT_RATE) : 0;
-  var total        = preDiscount - discountAmt;
+  var total        = subtotal + gratuityCost;
 
   currentTotal = total;
 
@@ -893,24 +831,11 @@ function recalc() {
   });
   document.getElementById('quote-lines').innerHTML = html;
 
-  // Discount row
-  var dRow = '';
-  if (state.addons.discount) {
-    dRow = '<div class="discount-line">'
-         + '<span>🎉 Aug/Sept discount (10%)</span>'
-         + '<span>− $' + discountAmt.toLocaleString() + '</span>'
-         + '</div>';
-  }
-  document.getElementById('discount-row').innerHTML = dRow;
-
   // Total
   document.getElementById('total-out').textContent = '$' + total.toLocaleString();
 
   // Note
   var tipNote = state.addons.gratuity ? '' : ' Tip jar or add hosted gratuity for corporate/wedding events.';
-  var discNote = state.addons.discount
-    ? ' <strong style="color:#2a7a4b">Aug/Sept 10% discount applied.</strong>'
-    : '';
   var whenLine = '';
   if (state.date || state.time) {
     var when = [fmtDate(state.date), fmtTime(state.time)].filter(Boolean).join(' · ');
@@ -922,9 +847,7 @@ function recalc() {
     + state.guests + ' guests &nbsp;·&nbsp; '
     + state.hours + ' hrs</strong><br>'
     + 'You supply the alcohol — FYRE brings everything else.'
-    + tipNote + discNote;
-
-  updateDateHint();
+    + tipNote;
 
   // Deposit / balance
   updateBookingBlock();
@@ -955,7 +878,6 @@ function copyQuote() {
     if (a.type === 'mocktail') { if (state.mocktail > 0) addons.push('Signature mocktail' + (state.mocktail > 1 ? 's' : '') + ' (×' + state.mocktail + ')'); return; }
     if (state.addons[a.key]) addons.push(a.name);
   });
-  if (state.addons.discount) addons.push('Aug/Sept discount (10% off)');
 
   var deposit = Math.round(currentTotal * DEPOSIT_RATE);
   var balance = currentTotal - deposit;

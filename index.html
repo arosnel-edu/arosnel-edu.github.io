@@ -837,6 +837,18 @@ video::-webkit-media-play-button {
     .faq-all a { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ember); text-decoration: none; border-bottom: 1px solid var(--ember); padding-bottom: 4px; }
     @media (max-width: 760px) { .faq-list { grid-template-columns: 1fr; gap: 32px; } }
 
+/* Hero subtitle on phones: keep "Weddings . Private Events . Corporate" on a single line */
+@media (max-width: 600px) {
+  .hero-sub {
+    white-space: nowrap;
+    font-size: min(0.8rem, 3.2vw);
+    letter-spacing: 0.06em;
+  }
+  .hero-sub span {
+    margin: 0 0.5em;
+  }
+}
+
 /* =====================
    HERO VIDEO ON PHONES
    The video is a wide 16:9 clip, so on a tall phone screen "cover" crops it to a thin slice
@@ -1047,7 +1059,7 @@ video::-webkit-media-play-button {
   </video>
   <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);z-index:1;"></div>
   <div class="hero-content" style="position:relative;z-index:2;">
-    <p class="hero-eyebrow">Sonoma County &bull; Marin &bull; San Francisco</p>
+    <p class="hero-eyebrow">Sonoma County &bull; Marin &bull; San&nbsp;Francisco</p>
     <h1>Craft<br><em>Bartending</em><br>Elevated</h1>
     <p class="hero-sub">
       Weddings

@@ -837,6 +837,37 @@ video::-webkit-media-play-button {
     .faq-all a { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ember); text-decoration: none; border-bottom: 1px solid var(--ember); padding-bottom: 4px; }
     @media (max-width: 760px) { .faq-list { grid-template-columns: 1fr; gap: 32px; } }
 
+/* =====================
+   HERO VIDEO ON PHONES
+   The video is a wide 16:9 clip, so on a tall phone screen "cover" crops it to a thin slice
+   and only part of the FYRE lettering shows. In portrait on small screens, show the whole
+   width of the clip near the top and move the headline below it. Desktop is not affected.
+===================== */
+@media (max-width: 900px) and (orientation: portrait) {
+  .hero {
+    align-items: flex-end;
+  }
+  .hero-content {
+    padding-bottom: 120px;
+  }
+  .hero video {
+    top: 70px !important;
+    left: 50% !important;
+    width: 150% !important;
+    height: auto !important;
+    transform: translateX(-50%);
+    object-fit: contain !important;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+  }
+}
+@media (max-width: 900px) and (orientation: portrait) and (max-height: 720px) {
+  .hero video {
+    top: 56px !important;
+    width: 120% !important;
+  }
+}
+
 </style>
 
 <!-- Structured data: LocalBusiness -->
